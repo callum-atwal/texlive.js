@@ -2,9 +2,8 @@ var TeXLive = function(opt_workerPath) {
   //var self=this;
   var chunksize= determineChunkSize();
   if (!opt_workerPath) {
-    opt_workerPath = '';
+    opt_workerPath = '/texlive.js/';
   }
-
 
   var component = function(workerPath) {
     var self = this;
@@ -81,12 +80,15 @@ var TeXLive = function(opt_workerPath) {
       function(binary_pdf) {
         if(binary_pdf === false)
           return p.done(false);
-        pdf_dataurl = 'data:application/pdf;charset=binary;base64,' + window.btoa(binary_pdf);
+        pdf_dataurl = window.btoa(binary_pdf);
+        
         return p.done(pdf_dataurl);
       });
     return p;
   };
+
   pdftex.compileRaw = function(source_code) {
+    
      var self=this;
      return pdftex.run(source_code).then(
       function() {
@@ -94,6 +96,7 @@ var TeXLive = function(opt_workerPath) {
       }
     );
   };
+
   pdftex.run = function(source_code) {
     var self=this;
     var commands;
@@ -108,6 +111,7 @@ var TeXLive = function(opt_workerPath) {
         curry(self, 'FS_createLazyFilesFromList', ['/', 'texlive.lst', './texlive', true, true]),
       ];
 
+      
     var sendCompile = function() {
       self.initialized = true;
       return self.sendCommand({
@@ -119,7 +123,117 @@ var TeXLive = function(opt_workerPath) {
     return promise.chain(commands)
       .then(sendCompile)
   };
+
   TeXLive.prototype.pdftex = pdftex;
+
+
+  var pdftex2=new component(opt_workerPath+'pdftex-worker.js');
+  pdftex2.compile = function(source_code) {
+    var self=this;
+    var p = new promise.Promise();
+    pdftex2.compileRaw(source_code).then(
+      function(binary_pdf) {
+        if(binary_pdf === false)
+          return p.done(false);
+        pdf_dataurl = window.btoa(binary_pdf);
+        
+        return p.done(pdf_dataurl);
+      });
+    return p;
+  };
+
+  pdftex2.compileRaw = function(source_code) {
+    
+     var self=this;
+     return pdftex2.run(source_code).then(
+      function() {
+        return self.FS_readFile('/input.pdf');
+      }
+    );
+  };
+
+  pdftex2.run = function(source_code) {
+    var self=this;
+    var commands;
+    if(self.initialized)
+      commands = [
+        curry(self, 'FS_unlink', ['/input.tex']),
+        curry(self, 'FS_createDataFile', ['/', 'input.tex', source_code, true, true])
+      ];
+    else
+      commands = [
+        curry(self, 'FS_createDataFile', ['/', 'input.tex', source_code, true, true]),
+        curry(self, 'FS_createLazyFilesFromList', ['/', 'texlive.lst', './texlive', true, true]),
+      ];
+
+      
+    var sendCompile = function() {
+      self.initialized = true;
+      return self.sendCommand({
+        'command': 'run',
+        'arguments': ['-interaction=nonstopmode', '-output-format', 'pdf', 'input.tex'],
+  //        'arguments': ['-debug-format', '-output-format', 'pdf', '&latex', 'input.tex'],
+      });
+    };
+    return promise.chain(commands)
+      .then(sendCompile)
+  };
+
+  TeXLive.prototype.pdftex2 = pdftex2;
+
+  var pdftex3=new component(opt_workerPath+'pdftex-worker.js');
+  pdftex3.compile = function(source_code) {
+    var self=this;
+    var p = new promise.Promise();
+    pdftex3.compileRaw(source_code).then(
+      function(binary_pdf) {
+        if(binary_pdf === false)
+          return p.done(false);
+        pdf_dataurl = window.btoa(binary_pdf);
+        
+        return p.done(pdf_dataurl);
+      });
+    return p;
+  };
+
+  pdftex3.compileRaw = function(source_code) {
+    
+     var self=this;
+     return pdftex3.run(source_code).then(
+      function() {
+        return self.FS_readFile('/input.pdf');
+      }
+    );
+  };
+
+  pdftex3.run = function(source_code) {
+    var self=this;
+    var commands;
+    if(self.initialized)
+      commands = [
+        curry(self, 'FS_unlink', ['/input.tex']),
+        curry(self, 'FS_createDataFile', ['/', 'input.tex', source_code, true, true])
+      ];
+    else
+      commands = [
+        curry(self, 'FS_createDataFile', ['/', 'input.tex', source_code, true, true]),
+        curry(self, 'FS_createLazyFilesFromList', ['/', 'texlive.lst', './texlive', true, true]),
+      ];
+
+      
+    var sendCompile = function() {
+      self.initialized = true;
+      return self.sendCommand({
+        'command': 'run',
+        'arguments': ['-interaction=nonstopmode', '-output-format', 'pdf', 'input.tex'],
+  //        'arguments': ['-debug-format', '-output-format', 'pdf', '&latex', 'input.tex'],
+      });
+    };
+    return promise.chain(commands)
+      .then(sendCompile)
+  };
+
+  TeXLive.prototype.pdftex3 = pdftex3;
 
   var bibtex = new component(opt_workerPath+'bibtex-worker.js');
   bibtex.compile = function(aux){
@@ -129,7 +243,7 @@ var TeXLive = function(opt_workerPath) {
       function(binary_bbl) {
         if(binary_bbl === false)
           return p.done(false);
-        pdf_dataurl = 'data:text/plain;charset=binary;base64,' + window.btoa(binary_bbl);
+        pdf_dataurl = window.btoa(binary_bbl);
         return p.done(pdf_dataurl);
       });
     return p;
@@ -142,7 +256,7 @@ var TeXLive = function(opt_workerPath) {
       }
     );
   };
-  bibtex.run = function(source_code) {
+  bibtex.run = function(aux) {
     var self=this;
     var commands;
     if(self.initialized)
