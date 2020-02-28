@@ -170,49 +170,45 @@ __index = function(t,key)
 return registernumber(key) or nil
 end}
 )
-luatexbase.attributes = attributes
-local attribute_count_name = attribute_count_name or "e@alloc@attribute@count"
+luatexbase.attributes=attributes
 local function new_attribute(name)
-  tex_setcount("global", attribute_count_name,
-                          tex_count[attribute_count_name] + 1)
-  if tex_count[attribute_count_name] > 65534 then
+  tex_setcount("global", "e@alloc@attribute@count",
+                          tex_count["e@alloc@attribute@count"] + 1)
+  if tex_count["e@alloc@attribute@count"] > 65534 then
     luatexbase_error("No room for a new \\attribute")
   end
-  attributes[name]= tex_count[attribute_count_name]
+  attributes[name]= tex_count["e@alloc@attribute@count"]
   luatexbase_log("Lua-only attribute " .. name .. " = " ..
-                 tex_count[attribute_count_name])
-  return tex_count[attribute_count_name]
+                 tex_count["e@alloc@attribute@count"])
+  return tex_count["e@alloc@attribute@count"]
 end
 luatexbase.new_attribute = new_attribute
-local whatsit_count_name = whatsit_count_name or "e@alloc@whatsit@count"
 local function new_whatsit(name)
-  tex_setcount("global", whatsit_count_name,
-                         tex_count[whatsit_count_name] + 1)
-  if tex_count[whatsit_count_name] > 65534 then
+  tex_setcount("global", "e@alloc@whatsit@count",
+                         tex_count["e@alloc@whatsit@count"] + 1)
+  if tex_count["e@alloc@whatsit@count"] > 65534 then
     luatexbase_error("No room for a new custom whatsit")
   end
   luatexbase_log("Custom whatsit " .. (name or "") .. " = " ..
-                 tex_count[whatsit_count_name])
-  return tex_count[whatsit_count_name]
+                 tex_count["e@alloc@whatsit@count"])
+  return tex_count["e@alloc@whatsit@count"]
 end
 luatexbase.new_whatsit = new_whatsit
-local bytecode_count_name = bytecode_count_name or "e@alloc@bytecode@count"
 local function new_bytecode(name)
-  tex_setcount("global", bytecode_count_name,
-                         tex_count[bytecode_count_name] + 1)
-  if tex_count[bytecode_count_name] > 65534 then
+  tex_setcount("global", "e@alloc@bytecode@count",
+                         tex_count["e@alloc@bytecode@count"] + 1)
+  if tex_count["e@alloc@bytecode@count"] > 65534 then
     luatexbase_error("No room for a new bytecode register")
   end
   luatexbase_log("Lua bytecode " .. (name or "") .. " = " ..
-                 tex_count[bytecode_count_name])
-  return tex_count[bytecode_count_name]
+                 tex_count["e@alloc@bytecode@count"])
+  return tex_count["e@alloc@bytecode@count"]
 end
 luatexbase.new_bytecode = new_bytecode
-local chunkname_count_name = chunkname_count_name or "e@alloc@luachunk@count"
 local function new_chunkname(name)
-  tex_setcount("global", chunkname_count_name,
-                         tex_count[chunkname_count_name] + 1)
-  local chunkname_count = tex_count[chunkname_count_name]
+  tex_setcount("global", "e@alloc@luachunk@count",
+                         tex_count["e@alloc@luachunk@count"] + 1)
+  local chunkname_count = tex_count["e@alloc@luachunk@count"]
   chunkname_count = chunkname_count + 1
   if chunkname_count > 65534 then
     luatexbase_error("No room for a new chunkname")
@@ -258,44 +254,36 @@ local callbacktypes = callbacktypes or {
   read_truetype_file = exclusive,
   read_type1_file    = exclusive,
   read_opentype_file = exclusive,
-  find_cidmap_file   = data,
-  read_cidmap_file   = exclusive,
   process_input_buffer  = data,
   process_output_buffer = data,
   process_jobname       = data,
-  contribute_filter      = simple,
-  buildpage_filter       = simple,
-  build_page_insert      = exclusive,
-  pre_linebreak_filter   = list,
-  linebreak_filter       = list,
-  append_to_vlist_filter = list,
-  post_linebreak_filter  = list,
-  hpack_filter           = list,
-  vpack_filter           = list,
-  hpack_quality          = list,
-  vpack_quality          = list,
-  pre_output_filter      = list,
-  process_rule           = list,
-  hyphenate              = simple,
-  ligaturing             = simple,
-  kerning                = simple,
-  insert_local_par       = simple,
-  mlist_to_hlist         = list,
-  pre_dump             = simple,
-  start_run            = simple,
-  stop_run             = simple,
-  start_page_number    = simple,
-  stop_page_number     = simple,
-  show_error_hook      = simple,
-  show_warning_message = simple,
-  show_error_message   = simple,
-  show_lua_error_hook  = simple,
-  start_file           = simple,
-  stop_file            = simple,
-  call_edit            = simple,
+  token_filter          = exclusive,
+  buildpage_filter      = simple,
+  pre_linebreak_filter  = list,
+  linebreak_filter      = list,
+  post_linebreak_filter = list,
+  hpack_filter          = list,
+  vpack_filter          = list,
+  pre_output_filter     = list,
+  hyphenate             = simple,
+  ligaturing            = simple,
+  kerning               = simple,
+  mlist_to_hlist        = list,
+  pre_dump            = simple,
+  start_run           = simple,
+  stop_run            = simple,
+  start_page_number   = simple,
+  stop_page_number    = simple,
+  show_error_hook     = simple,
+  show_error_message  = simple,
+  show_lua_error_hook = simple,
+  start_file          = simple,
+  stop_file           = simple,
   finish_pdffile = data,
   finish_pdfpage = data,
   define_font = exclusive,
+  find_cidmap_file           = data,
+  pdf_stream_filter_callback = data,
 }
 luatexbase.callbacktypes=callbacktypes
 local callback_register = callback_register or callback.register
@@ -359,7 +347,7 @@ local function create_callback(name, ctype, default)
   end
   if callbacktypes[name] then
     luatexbase_error("Unable to create callback `" .. name ..
-                     "':\ncallback is already defined")
+                     "':\ncallback type disallowed as name")
   end
   if default ~= false and type (default) ~= "function" then
     luatexbase_error("Unable to create callback `" .. name ..

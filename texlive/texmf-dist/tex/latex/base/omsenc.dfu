@@ -42,13 +42,15 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
  \ProvidesFile{omsenc.dfu}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \DeclareUnicodeCharacter{00A7}{\textsection}
 \DeclareUnicodeCharacter{00B6}{\textparagraph}
 \DeclareUnicodeCharacter{00B7}{\textperiodcentered}
+
 \DeclareUnicodeCharacter{2020}{\textdagger}
 \DeclareUnicodeCharacter{2021}{\textdaggerdbl}
 \DeclareUnicodeCharacter{2022}{\textbullet}
+
 \endinput
 %%
 %% End of file `omsenc.dfu'.

@@ -43,8 +43,23 @@
 %% extension .ins) which are part of the distribution.
 \NeedsTeXFormat{LaTeX2e}[1994/12/01]
  \ProvidesPackage{doc}
-  [2016/02/15 v2.1g
+  [2014/09/29 v2.1e
    Standard LaTeX documentation package (FMi)]
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
 %%
 %% Package `doc' to use with LaTeX 2e
 %% Copyright (C) 1989-1999 Frank Mittelbach, all rights reserved.
@@ -294,12 +309,7 @@
    \catcode`\\12
    \MakePrivateLetters \m@cro@ \iffalse}
 \long\def\m@cro@#1#2{\endgroup \topsep\MacroTopsep \trivlist
-  \edef\saved@macroname{\string#2}%
-  #1
-    \let\saved@indexname\saved@macroname
-  \else
-    \edef\saved@indexname{\expandafter\@gobble\string#2}%
-  \fi
+   \edef\saved@macroname{\string#2}%
   \def\makelabel##1{\llap{##1}}%
   \if@inlabel
     \let\@tempa\@empty \count@\macro@cnt
@@ -579,7 +589,8 @@
                                    \actualchar
                                    \generalname
                                  \else
-                                   \saved@indexname
+                                   \expandafter\@gobble
+                                   \saved@macroname
                                    \actualchar
                                    \string\verb\quotechar*%
                                    \verbatimchar\saved@macroname
@@ -588,7 +599,6 @@
                                  :\levelchar #3}}%
   \@tempa\endgroup\@esphack}
 \def\saved@macroname{}
-\def\saved@indexname{}
 \def\generalname{General}
 \let\RecordChanges\makeglossary
 \newdimen\GlossaryMin         \GlossaryMin       = 80pt
@@ -614,11 +624,7 @@
      {\def\glossary@prologue{\section*{{Change History}}%
                  \markboth{{Change History}}{{Change History}}%
                  }}{}
-\@ifundefined{GlossaryParms}{\let\GlossaryParms\IndexParms
-  \expandafter\def\expandafter\GlossaryParms\expandafter{\GlossaryParms
-     \rightskip 15pt plus 1fil
-     \parfillskip -15pt plus -1fil\relax}
-}{}
+\@ifundefined{GlossaryParms}{\let\GlossaryParms\IndexParms}{}
 \def\PrintChanges{\@input@{\jobname.gls}%
                   \global\let\PrintChanges\@empty}
 \newcommand\AlsoImplementation{%
@@ -729,7 +735,6 @@
 \def\init@checksum{\relax
     \global\bslash@cnt\z@}
 \def\check@checksum{\relax
-  \ifnum\check@sum>\m@ne
      \ifnum\check@sum=\z@
        \typeout{**********************************}%
        \typeout{* This macro file has no checksum!}%
@@ -747,9 +752,8 @@
            Try to get a correct version.}%
        \fi
      \fi
-  \fi
-  \global\check@sum\m@ne}
-\newcount\check@sum           \check@sum  = \m@ne
+     \global\check@sum\z@}
+\newcount\check@sum           \check@sum  = \z@
 \newcount\bslash@cnt          \bslash@cnt = \z@
 \def\CheckSum#1{\@bsphack\global\check@sum#1\relax\@esphack}
 \def\step@checksum{\global\advance\bslash@cnt\@ne}

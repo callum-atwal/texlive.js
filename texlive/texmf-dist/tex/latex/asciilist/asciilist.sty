@@ -1,0 +1,292 @@
+%%
+%% This is file `asciilist.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% asciilist.dtx  (with options: `package')
+%% 
+%% Copyright (C) 2014-2015 by Richard Gay <gay@mais.informatik.tu-darmstadt.de>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.2 of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.2 or later is part of all distributions of LaTeX version
+%% 1999/12/01 or later.
+%% 
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{asciilist}
+    [2016/03/05 v2.1 Package for quickly creating nested lists]
+\RequirePackage{etoolbox}
+\RequirePackage{trimspaces}
+\newenvironment{AsciiList}[2][\asclst@defaultenvs]{%
+  \bgroup
+  \edef\asclst@listenv{#1}%
+  \gdef\asclst@itemchars{}%
+  \ifstrequal{#2}{auto}%
+    {\asclst@autocharstrue}%
+    {\asclst@autocharsfalse\forcsvlist{\listadd\asclst@itemchars}{#2}}%
+  \asclst@nlsetup\asclst@newline
+  \global\asclst@curlevel=0\relax%
+  \let\UP=\asclst@levelsup%
+  \let\UPTO=\asclst@levelsupto%
+  \asclst@ifnextnewline{}{\asclst@newline}%
+}{%
+  \asclst@changelistlevel{\asclst@curlevel}{0}%
+  \asclst@restorenewline%
+  \egroup}
+\newcommand\AsciiListFromFile[3][\asclst@defaultenvs]{%
+  \AsciiList[#1]{#2}%
+  \everyeof{\relax}%
+  \expandafter\asclst@newline\@@input #3\relax
+  \endAsciiList}
+\newcommand\AsciiListFromFiles[3][\asclst@defaultenvs]{%
+  \AsciiList[#1]{#2}%
+  \everyeof{\relax}%
+  \def\asclst@@load##1{\expandafter\asclst@newline\@@input ##1\relax}%
+  \forcsvlist{\asclst@@load}{#3}%
+  \endAsciiList}
+{\catcode`\^^M=\active%
+  \gdef\asclst@checknext#1#2{%
+    \ifstrequal{#1}{#2}{\asclst@newlevel=\@tempcntb}{}}%
+  \gdef\asclst@newline#1{%
+    \asclst@newlevel=0\@tempcntb=0\relax%
+    \forlistloop{\advance\@tempcntb by 1\asclst@checknext{#1}}%
+                {\asclst@itemchars}%
+    \ifnum\asclst@newlevel=0\ifasclst@autochars%
+      \ifinlist{#1}{\asclst@autocharlist}{%
+        \listgadd\asclst@itemchars{#1}%
+        \asclst@newlevel=\@tempcntb%
+        \advance\asclst@newlevel by 1\relax%
+      }{}%
+    \fi\fi%
+    \ifnum\asclst@newlevel>0\relax%
+      \def\asclst@@do{%
+        \asclst@changelistlevel{\asclst@curlevel}{\asclst@newlevel}%
+        \ifhmode\unskip\space\fi\asclst@@item}%
+    \else%
+      \def\asclst@@tmpone{#1}\def\asclst@@test{^^M}%
+      \ifx\asclst@@test\asclst@@tmpone%
+        \def\asclst@@do{\par #1}%
+      \else\def\asclst@@do{\space #1}\fi%
+    \fi\asclst@@do}%
+  \gdef\asclst@ifnextnewline{\@ifnextchar^^M}
+}
+\newcount\asclst@curlevel
+\newcount\asclst@newlevel
+\newcommand\asclst@changelistlevel[2]{%
+  \def\asclst@@envchanger{}%
+  \ifnum#2<#1\relax
+    \def\asclst@@last{}%
+    \@tempcnta=0\relax
+    \@tempcntb=#2 \advance\@tempcntb by 1\relax
+    \def\do##1{\advance\@tempcnta by1\relax
+      \ifnum\@tempcnta<\@tempcntb\else
+        \ifnum\@tempcnta>#1\else
+        \preto\asclst@@envchanger{\asclst@end ##1<>\@undefined}\fi\fi
+      \def\asclst@@last{##1}}%
+    \expandafter\docsvlist\expandafter{\asclst@listenv}%
+    \advance\@tempcnta by1\ifnum\@tempcnta<\@tempcntb
+      \@tempcnta=\@tempcntb\fi
+    \loop \ifnum\@tempcnta>#1\else
+      \advance\@tempcnta by 1%
+      \epreto\asclst@@envchanger{\noexpand
+        \asclst@end\expandonce\asclst@@last<>\noexpand\@undefined}%
+    \repeat%
+  \else\ifnum#2>#1\relax%
+    \def\asclst@@last{}%
+    \@tempcnta=0\relax
+    \@tempcntb=#1\relax\advance\@tempcntb by 1\relax
+    \def\do##1{\advance\@tempcnta by1\relax
+      \ifnum\@tempcnta<\@tempcntb\else
+        \ifnum\@tempcnta>#2\else
+        \appto\asclst@@envchanger{\asclst@begin ##1<>\@undefined}\fi\fi
+      \def\asclst@@last{##1}}%
+    \expandafter\docsvlist\expandafter{\asclst@listenv}%
+    \advance\@tempcnta by1\ifnum\@tempcnta<\@tempcntb
+      \@tempcnta=\@tempcntb\fi
+    \loop \ifnum\@tempcnta>#2\else
+      \advance\@tempcnta by 1%
+      \eappto\asclst@@envchanger{%
+        \noexpand\asclst@begin
+          \expandonce\asclst@@last<>\noexpand\@undefined}%
+    \repeat%
+  \fi\fi%
+  \global\asclst@curlevel=#2%
+  \asclst@@envchanger}
+\newcommand*\asclst@levelsup[1][1]{%
+  \asclst@newlevel=\asclst@curlevel
+  \advance\asclst@newlevel by-#1\relax
+  \asclst@changelistlevel{\asclst@curlevel}{\asclst@newlevel}}
+\newcommand*\asclst@levelsupto[1]{%
+  \ifnum\asclst@curlevel<#1\relax
+    \PackageError{asciilist}{Cannot change level downwards!}{}%
+  \else
+    \asclst@changelistlevel{\asclst@curlevel}{#1}%
+  \fi}
+\newenvironment{AsciiDocList}[1][]{%
+  \bgroup
+  \def\asclst@curnestlvl{}%
+  \asclst@nlsetup\asclst@docnewline%
+  \def\asclst@levelchrs{}%
+  \def\do##1{\asclst@parsechmapentry##1\@undefined}%
+  \ifstrempty{#1}%
+    {\expandafter\docsvlist\expandafter{\asclst@docdefaultenvs}}%
+    {\docsvlist{#1}}%
+  \let\UPTO=\asclst@changedoclistlevel%
+  \asclst@ifnextnewline{}{\asclst@docnewline}%
+}{%
+  \asclst@changedoclistlevel{}%
+  \asclst@restorenewline%
+  \egroup}
+\newcommand\AsciiDocListFromFile[2][]{%
+  \AsciiDocList[#1]%
+  \everyeof{\relax}%
+  \expandafter\asclst@docnewline\@@input #2\relax
+  \endAsciiDocList}
+\newcommand\AsciiDocListFromFiles[2][]{%
+  \AsciiDocList[#1]%
+  \everyeof{\relax}%
+  \def\asclst@@load##1{\expandafter\asclst@docnewline\@@input##1\relax}%
+  \forcsvlist{\asclst@@load}{#2}%
+  \endAsciiDocList}
+{\catcode`\^^M=\active%
+  \gdef\asclst@docnewline{\asclst@docnewline@i{}}%
+  \gdef\asclst@docnewline@i#1#2{%
+    \ifinlist{#2}{\asclst@levelchrs}%
+      {\asclst@docnewline@i{#1#2}}%
+      {\asclst@docnewline@ii{#1}{#2}}}%
+  \gdef\asclst@docnewline@ii#1#2{%
+    \ifstrempty{#1}{%
+      \def\asclst@@tmpone{#2}\def\asclst@@test{^^M}%
+      \ifx\asclst@@test\asclst@@tmpone%
+        \def\asclst@@do{\par #2}%
+      \else%
+        \def\asclst@@do{\space #2}\fi%
+      \asclst@@do%
+    }{%
+      \asclst@changedoclistlevel{#1}%
+      \ifhmode\unskip\space\fi\asclst@@item #2%
+    }}%
+}
+\def\asclst@parsechmapentry#1=#2\@undefined{%
+  \listadd\asclst@levelchrs{#1}%
+  \csdef{asclst@levelchr@#1}{#2}}
+\newcommand\asclst@changedoclistlevel[1]{%
+  \def\asclst@@envchanger{}%
+  \expandafter\asclst@changedoclistlevel@i\asclst@curnestlvl{}{}\@undefined
+    #1{}{}\@undefined
+  \asclst@@envchanger
+  \gdef\asclst@curnestlvl{#1}}
+\def\asclst@changedoclistlevel@i#1#2\@undefined#3#4\@undefined{%
+  \ifstrempty{#1#3}{}{%
+    \ifstrequal{#1}{#3}%
+      {\asclst@changedoclistlevel@i#2{}\@undefined#4{}\@undefined}%
+      {\asclst@changedoclistlevel@ii#1#2{}\@undefined#3#4{}\@undefined}%
+    }}
+\def\asclst@changedoclistlevel@ii#1#2\@undefined#3#4\@undefined{%
+  \ifstrempty{#1#3}{}{%
+    \ifstrempty{#1}{}{%
+      \epreto\asclst@@envchanger{%
+        \noexpand\asclst@end
+          \csuse{asclst@levelchr@#1}<>\noexpand\@undefined}}%
+    \ifstrempty{#3}{}{%
+      \eappto\asclst@@envchanger{%
+        \noexpand\asclst@begin
+          \csuse{asclst@levelchr@#3}<>\noexpand\@undefined}}%
+    \asclst@changedoclistlevel@ii#2{}\@undefined#4{}\@undefined}}
+\long\def\asclst@begin#1<#2>#3\@undefined{%
+  \ifinlist{#1}{\asclst@registeredenvs}%
+    {\bgroup
+     \ifstrempty{#2}%
+       {\@nameuse{asclst@env@#1@begin}}%
+       {\@nameuse{asclst@env@#1@begin}[#2]}%
+     \edef\asclst@@item{\csexpandonce{asclst@env@#1@item}}}%
+    {%
+     \ifstrempty{#2}%
+       {\begin{#1}}%
+       {\begin{#1}[#2]}%
+     \def\asclst@@item{\item}}}
+\long\def\asclst@end#1<#2>#3\@undefined{%
+  \ifinlist{#1}{\asclst@registeredenvs}%
+    {\@nameuse{asclst@env@#1@end}\egroup}%
+    {\end{#1}}}
+{\catcode`\^^M=\active%
+  \gdef\asclst@nlsetup#1{%
+    \let\asclst@orignewline=^^M%
+    \catcode`\^^M\active%
+    \let^^M=#1}%
+  \gdef\asclst@restorenewline{\let^^M=\asclst@orignewline}%
+}
+\newif\ifasclst@autochars
+\newcommand*\AsciiListSetAutochars[1]{%
+  \def\asclst@autocharlist{}%
+  \forcsvlist{\listadd\asclst@autocharlist}{#1}}
+\AsciiListSetAutochars{-,*,+}
+\newcommand*\AsciiListSetEnvironments[1]{%
+  \def\asclst@defaultenvs{#1}}
+\AsciiListSetEnvironments{itemize}
+\newcommand*\AsciiDocListSetEnvironments[1]{%
+  \def\asclst@docdefaultenvs{#1}}
+\AsciiDocListSetEnvironments{*=itemize,+=enumerate,;=Description}
+\newcommand*\NewAsciiListEnv[3][\asclst@defaultenvs]{%
+  \newenvironment{#3}%
+    {\begin{AsciiList}[#1]{#2}}%
+    {\end{AsciiList}}%
+  \csdef{#3FromFile}##1{\AsciiListFromFile[#1]{#2}{##1}}%
+  \csdef{#3FromFiles}##1{\AsciiListFromFiles[#1]{#2}{##1}}%
+}
+\newcommand*\NewAsciiDocListEnv[2][\asclst@docdefaultenvs]{%
+  \newenvironment{#2}%
+    {\begin{AsciiDocList}[#1]}%
+    {\end{AsciiDocList}}%
+  \csdef{#2FromFile}##1{\AsciiDocListFromFile[#1]{##1}}%
+  \csdef{#2FromFiles}##1{\AsciiDocListFromFiles[#1]{##1}}%
+}
+\def\asclst@registeredenvs{}
+\newcommand*\AsciiListRegisterEnv[4]{%
+  \listadd\asclst@registeredenvs{#1}%
+  \csdef{asclst@env@#1@begin}{#2}%
+  \csdef{asclst@env@#1@end}{#3}%
+  \csdef{asclst@env@#1@item}{#4}}
+\newcommand*\AsciiListRegisterDescEnv[1]{%
+  \AsciiListRegisterEnv{#1}{\csuse{#1}}{\csuse{end#1}}%
+                       {\AsciiListEndOArg{\item}}}
+{\catcode`\^^M=\active%
+  \gdef\AsciiListEndArg#1#2^^M{%
+    \begingroup%
+    \protected@edef\asclst@@result{%
+      \endgroup\unexpanded{#1}{\trim@pre@space{#2}}}%
+    \asclst@@result
+  }%
+  \gdef\AsciiListEndOArg#1#2^^M{%
+    \begingroup%
+    \protected@edef\asclst@@result{%
+      \endgroup\unexpanded{#1}[\trim@pre@space{#2}]}%
+    \asclst@@result
+  }%
+}
+\AsciiListRegisterEnv{chapter}{}{}{\AsciiListEndArg{\chapter}}
+\AsciiListRegisterEnv{section}{}{}{\AsciiListEndArg{\section}}
+\AsciiListRegisterEnv{subsection}{}{}{\AsciiListEndArg{\subsection}}
+\AsciiListRegisterEnv{subsubsection}{}{}%
+                     {\AsciiListEndArg{\subsubsection}}
+\AsciiListRegisterEnv{section*}{}{}{\AsciiListEndArg{\section*}}
+\AsciiListRegisterEnv{subsection*}{}{}{\AsciiListEndArg{\subsection*}}
+\AsciiListRegisterEnv{subsubsection*}{}{}%
+                     {\AsciiListEndArg{\subsubsection*}}
+\AsciiListRegisterEnv{paragraph}{}{}{\AsciiListEndArg{\paragraph}}
+\AsciiListRegisterDescEnv{description}
+\AsciiListRegisterDescEnv{compactdesc}
+\newcommand\asclst@BreakingDescItem[1][]{\item[#1]\leavevmode}
+\AsciiListRegisterEnv{Description}{\description}{\enddescription}%
+                     {\AsciiListEndOArg{\asclst@BreakingDescItem}}
+\AsciiListRegisterEnv{CompactDesc}{\compactdesc}{\endcompactdesc}%
+                     {\AsciiListEndOArg{\asclst@BreakingDescItem}}
+\endinput
+%%
+%% End of file `asciilist.sty'.

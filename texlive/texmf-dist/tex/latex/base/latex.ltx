@@ -93,11 +93,6 @@
                  tex.extraprimitives("omega", "aleph", "luatex"))}
   \fi
 \fi
-\ifx\eTeXversion\undefined
-  \errmessage
-    {LaTeX requires e-TeX}
-  \expandafter\endinput
-\fi
 \catcode`\#=6
 \catcode`\^=7
 \chardef\active=13
@@ -288,7 +283,7 @@
 \catcode`\_=8 % underline and downarrow are for subscripts
 \catcode`\^^I=10 % ascii tab is a blank space
 \chardef\active=13 \catcode`\~=\active % tilde is active
-\catcode`\^^L=\active \def^^L{\par}% ascii form-feed is \par
+\catcode`\^^L=\active \outer\def^^L{\par}% ascii form-feed is \outer\par
 \message{catcodes,}
 \def\dospecials{\do\ \do\\\do\{\do\}\do\$\do\&%
   \do\#\do\^\do\_\do\%\do\~}
@@ -350,12 +345,8 @@
 \fi
 \def\new@mathgroup
   {\e@alloc\mathgroup\chardef{\count18}\m@ne\e@mathgroup@top}
+\def\newlanguage  {\e@alloc\language \chardef{\count19}\m@ne\@cclvi}
 \let\newfam\new@mathgroup
-\ifx\directlua\@undefined
-  \def\newlanguage  {\e@alloc\language \chardef{\count19}\m@ne\@cclvi}
-\else
-  \def\newlanguage  {\e@alloc\language \chardef{\count19}\m@ne{16384}}
-\fi
 \ifx\directlua\@undefined
   \ifx\widowpenalties\@undefined
     \mathchardef\e@alloc@top=255
@@ -396,7 +387,7 @@
 \count@#1\relax
 \ifnum\count@>\z@
 \newinsert\reserved@a
-\global\expandafter\chardef
+\expandafter\chardef
             \csname bx@\the\allocationnumber\endcsname\allocationnumber
 \@cons\@freelist{\csname bx@\the\allocationnumber\endcsname}%
 \advance\count@\m@ne
@@ -412,8 +403,8 @@
   \ch@ck1\count@\dimen
   \ch@ck2\count@\skip
   \ch@ck4\count@\box
-\global\e@alloc@chardef\float@count\count@
-\global\expandafter\e@alloc@chardef
+\e@alloc@chardef\float@count\count@
+\expandafter\e@alloc@chardef
             \csname bx@\the\float@count\endcsname\float@count
 \@cons\@freelist{\csname bx@\the\float@count\endcsname}%
 \expandafter
@@ -442,7 +433,6 @@
 \fi
 \def\newinsert#1{%
 \@tempswafalse
-\global\advance\insc@unt\m@ne
 \ifnum\count10<\insc@unt
 \ifnum\count11<\insc@unt
 \ifnum\count12<\insc@unt
@@ -450,9 +440,9 @@
   \@tempswatrue
 \fi\fi\fi\fi
 \if@tempswa
+\global\advance\insc@unt\m@ne
 \allocationnumber\insc@unt
 \else
-\global\advance\insc@unt\@ne
   \extrafloats\@ne
   \@next\@currbox\@freelist
     {\ifnum\@currbox<\e@insert@top
@@ -477,6 +467,22 @@
 \newdimen\z@ \z@=0pt % can be used both for 0pt and 0
 \newskip\z@skip \z@skip=0pt plus0pt minus0pt
 \newbox\voidb@x % permanently void box register
+\message{compatibility for TeX 2, }
+\ifx\@undefined\inputlineno
+  \newcount\inputlineno
+  \inputlineno-1
+  \ifx\@undefined\language
+    \newcount\language
+  \fi
+  \newcount\lefthyphenmin
+  \newcount\righthyphenmin
+  \newcount\errorcontextlines
+  \newcount\holdinginserts
+  \newdimen\emergencystretch
+  \newcount\badness
+  \let\noboundary\relax
+  \newcount\setlanguage
+\fi
 \message{parameters,}
 \pretolerance=100
 \tolerance=200 % INITEX sets this to 10000
@@ -571,7 +577,7 @@
 \def\hglue{\afterassignment\hgl@\skip@=}
 \def\hgl@{\leavevmode \count@\spacefactor \vrule \@width\z@
   \nobreak\hskip\skip@ \spacefactor\count@}
-\def\slash{/\penalty\exhyphenpenalty}
+\def\slash{/\penalty\exhyphenpenalty} % a `/' that acts like a `-'
 \def\break{\penalty-\@M}
 \def\nobreak{\penalty \@M}
 \def\allowbreak{\penalty \z@}
@@ -697,8 +703,8 @@
 %%% From File: ltvers.dtx
 \def\fmtname{LaTeX2e}
 \edef\fmtversion
-   {2017/01/01}
-\def\patch@level{3}
+   {2016/02/01}
+\def\patch@level{0}
 \iffalse
 \def\reserved@a#1/#2/#3\@nil{%
   \count@\year
@@ -740,7 +746,6 @@
     \write16{\fmtname \space<\fmtversion> pre-release\patch@level}
     \fi
   \fi
-\let\@currname\@empty
 \def\IncludeInRelease#1{\kernel@ifnextchar[%
   {\@IncludeInRelease{#1}}
   {\@IncludeInRelease{#1}[#1]}}
@@ -1281,7 +1286,11 @@ Type  H <return>  for immediate help.}%
   \@latex@info{#1\@gobble}}
 \let\c@errorcontextlines\errorcontextlines
 \c@errorcontextlines=-1
-\def\on@line{ on input line \the\inputlineno}
+\ifnum\inputlineno=\m@ne
+  \let\on@line\@empty
+\else
+  \def\on@line{ on input line \the\inputlineno}
+\fi
 \let\@warning\@latex@warning
 \let\@@warning\@latex@warning@no@line
 \global\let\@latexerr\@latex@error
@@ -1907,7 +1916,7 @@ Type  H <return>  for immediate help.}%
       \expandafter\reserved@b\expandafter{\reserved@a{##1}}%
    \fi
    \expandafter\def\csname\expandafter\string\csname
-      #2\endcsname\string#1-\string#3\@empty\endcsname{#4}}
+      #2\endcsname\string#1-\string#3\endcsname{#4}}
 \@onlypreamble\DeclareTextCompositeCommand
 \def\@text@composite#1#2#3\@text@composite{%
    \expandafter\@text@composite@x
@@ -2153,7 +2162,7 @@ Type  H <return>  for immediate help.}%
    \@ctrerr \fi
 }%
 \begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname protected\endcsname\relax
+\expandafter\ifx\csname eTeXversion\endcsname\relax
 \DeclareRobustCommand\TextOrMath{%
   \ifmmode  \expandafter\@secondoftwo
   \else     \expandafter\@firstoftwo  \fi}
@@ -2577,7 +2586,6 @@ Type  H <return>  for immediate help.}%
 \ifx\noaccents@\@undefined
   \let\noaccents@\@empty
 \fi
-\ifx\XeTeXcharclass\@undefined
 \gdef\showhyphens#1{%
   \setbox0\vbox{%
     \color@begingroup
@@ -2586,54 +2594,6 @@ Type  H <return>  for immediate help.}%
     \normalfont
     \pretolerance\m@ne\tolerance\m@ne\hbadness\z@\showboxdepth\z@\ #1%
     \color@endgroup}}
-\else
-\long\def\showhyphens#1{%
-  \setbox0\vbox{%
-    \usefont{TU}{lmr}{m}{n}%
-    \hsize 1sp %
-    \hbadness\@M
-    \hfuzz\maxdimen
-    \tracingonline\z@
-    \everypar={}%
-    \leftskip\z@skip
-    \rightskip\z@skip
-    \parfillskip\z@skip
-    \hyphenpenalty=-\@M
-    \pretolerance\m@ne
-    \interlinepenalty\z@
-    \clubpenalty\z@
-    \widowpenalty\z@
-    \brokenpenalty1127 %
-    \setbox\z@\hbox{}%
-    \noindent
-    \hskip\z@skip
-    #1%
-    \par
-     \loop
-     \@tempswafalse
-     \ifnum\lastnodetype=11\unskip\@tempswatrue\fi
-     \ifnum\lastnodetype=12\unkern\@tempswatrue\fi
-     \ifnum\lastnodetype=13 %
-      \count@\lastpenalty
-      \unpenalty\@tempswatrue
-    \fi
-    \ifnum\lastnodetype=\@ne
-     \setbox\tw@\lastbox\@tempswatrue
-     \setbox0\hbox{\unhbox\tw@\unskip\unskip\unpenalty
-                   \ifnum\count@=1127 \else\ \fi
-                   \unhbox0}%
-     \count@\z@
-    \fi
-    \if@tempswa
-    \repeat
-   \hbadness\z@
-   \hsize\maxdimen
-   \showboxdepth\z@
-   \tolerance\m@ne
-   \hyphenpenalty\z@
-   \noindent\unhbox\z@
-}}
-\fi
 \long\def\addto@hook#1#2{#1\expandafter{\the#1#2}}
  \def\@vpt{5}
  \def\@vipt{6}
@@ -3454,8 +3414,7 @@ Type  H <return>  for immediate help.}%
       \multiply\count@\sixt@@n
       \advance\count\tw@-\count@
       \if\relax\noexpand#1% is command?
-        \edef\reserved@a{\noexpand\in@
-           {\expandafter\@gobble\string\mathaccent}{\meaning#1}}%
+        \edef\reserved@a{\noexpand\in@{\string\mathaccent}{\meaning#1}}%
         \reserved@a
         \ifin@
           \expandafter\set@mathaccent
@@ -3497,9 +3456,7 @@ Type  H <return>  for immediate help.}%
       \multiply\count@\sixt@@n
       \advance\count\tw@-\count@
       \if\relax\noexpand#1% is command?
-        \edef\reserved@a
-          {\noexpand\in@{\expandafter\@gobble\string\mathchar}%
-                        {\meaning#1}}%
+        \edef\reserved@a{\noexpand\in@{\string\mathchar}{\meaning#1}}%
         \reserved@a
         \ifin@
           \expandafter\set@mathsymbol
@@ -3579,8 +3536,7 @@ Type  H <return>  for immediate help.}%
         \advance\count\tw@-\count@
         \edef\reserved@d{\hexnumber@{\count\z@}\hexnumber@{\count\tw@}}%
       %
-        \edef\reserved@a{\noexpand\in@
-            {\expandafter\@gobble\string\delimiter}{\meaning#1}}%
+        \edef\reserved@a{\noexpand\in@{\string\delimiter}{\meaning#1}}%
         \reserved@a
         \ifin@
           \expandafter\set@mathdelimiter
@@ -3657,8 +3613,7 @@ Type  H <return>  for immediate help.}%
        \relax
      \let#1\radical
   \fi
-  \edef\reserved@a{\noexpand\in@
-       {\expandafter\@gobble\string\radical}{\meaning#1}}%
+  \edef\reserved@a{\noexpand\in@{\string\radical}{\meaning#1}}%
   \reserved@a
   \ifin@
     \expandafter\in@\csname sym#2\expandafter\endcsname
@@ -3890,6 +3845,25 @@ Type  H <return>  for immediate help.}%
 \DeclareErrorFont{OT1}{cmr}{m}{n}{10}  %% don't modify this setting
                                        %% overwrite it in fontdef.cfg
                                        %% if necessary
+\ifnum\inputlineno=\m@ne
+\InputIfFileExists{fonttext.cfg}
+           {\typeout{====================================^^J%
+                     ^^J%
+                      Local config file fonttext.cfg used^^J%
+                     ^^J%
+                     ====================================}%
+             \def\@addtofilelist##1{\xdef\@filelist{\@filelist,##1}}%
+            }
+           {\typeout{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!^^J%
+                     !^^J%
+                     ! You MUST use a fonttext.cfg file!^^J%
+                     ! As you are still using TeX2!!!!!^^J%
+                     !^^J%
+                     ! See the documentation file tex2.txt^^J%
+                     !^^J%
+                     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}%
+                    \batchmode \@@end}
+\else
 \InputIfFileExists{fonttext.cfg}
            {\typeout{====================================^^J%
                      ^^J%
@@ -3899,6 +3873,7 @@ Type  H <return>  for immediate help.}%
              \def\@addtofilelist##1{\xdef\@filelist{\@filelist,##1}}%
             }
            {\input{fonttext.ltx}}
+\fi
 \let\@addtofilelist\@gobble
 \InputIfFileExists{fontmath.cfg}
            {\typeout{====================================^^J%
@@ -5636,23 +5611,17 @@ Type  H <return>  for immediate help.}%
      size unavailable}}
 \gdef\@put#1#2#3{\raise #2\hb@xt@\z@{\hskip #1#3\hss}}
 \gdef\oval(#1,#2){\@ifnextchar[{\@oval(#1,#2)}{\@oval(#1,#2)[]}}
-\newif\if@ovvline \@ovvlinetrue
-\newif\if@ovhline \@ovhlinetrue
 \gdef\@oval(#1,#2)[#3]{\begingroup\boxmaxdepth \maxdimen
   \@ovttrue \@ovbtrue \@ovltrue \@ovrtrue
-  \@ovvlinefalse \@ovhlinefalse
   \@tfor\reserved@a :=#3\do{\csname @ov\reserved@a false\endcsname}%
-  \@ovxx #1\unitlength
-  \@ovyy #2\unitlength
-  \@tempdimb \ifdim \@ovyy >\@ovxx \@ovxx \@ovvlinetrue
-  \else \@ovyy \ifdim \@ovyy =\@ovxx \else \@ovhlinetrue \fi\fi
+  \@ovxx
+  #1\unitlength \@ovyy #2\unitlength
+  \@tempdimb \ifdim \@ovyy >\@ovxx \@ovxx\else \@ovyy \fi
   \advance \@tempdimb -2\p@
   \@getcirc \@tempdimb
   \@ovro \ht\@tempboxa \@ovri \dp\@tempboxa
   \@ovdx\@ovxx \advance\@ovdx -\@tempdima \divide\@ovdx \tw@
   \@ovdy\@ovyy \advance\@ovdy -\@tempdima \divide\@ovdy \tw@
-  \ifdim \@ovdx >\z@ \@ovhlinetrue \fi
-  \ifdim \@ovdy >\z@ \@ovvlinetrue \fi
   \@circlefnt \setbox\@tempboxa
   \hbox{\if@ovr \@ovvert32\kern -\@tempdima \fi
   \if@ovl \kern \@ovxx \@ovvert01\kern -\@tempdima \kern -\@ovxx \fi
@@ -5665,15 +5634,13 @@ Type  H <return>  for immediate help.}%
     \if@ovb \@tempcntb \@tempcnta \advance \@tempcntb #1\relax
       \kern -\@ovro \hbox{\char \@tempcntb}\nointerlineskip
     \else \kern \@ovri \kern \@ovdy \fi
-    \if@ovvline \leaders\vrule \@width \@wholewidth \fi
-    \vfil \nointerlineskip
+    \leaders\vrule \@width \@wholewidth\vfil \nointerlineskip
     \if@ovt \@tempcntb \@tempcnta \advance \@tempcntb #2\relax
       \hbox{\char \@tempcntb}%
     \else \kern \@ovdy \kern \@ovro \fi}}
 \gdef\@ovhorz{\hb@xt@\@ovxx{\kern \@ovro
     \if@ovr \else \kern \@ovdx \fi
-    \if@ovhline \leaders \hrule \@height \@wholewidth \fi
-    \hfil
+    \leaders \hrule \@height \@wholewidth \hfil
     \if@ovl \else \kern \@ovdx \fi
     \kern \@ovri}}
 \gdef\circle{\@inmatherr\circle\@ifstar\@dot\@circle}
@@ -7407,7 +7374,7 @@ Type  H <return>  for immediate help.}%
 }
 \def\@makefcolumn #1{%
   \begingroup
-    \@fpmin -\maxdimen
+    \@fpmin \z@
     \let \@testfp \@gobble
     \@tryfcolumn #1%
   \endgroup
@@ -7556,6 +7523,7 @@ Type  H <return>  for immediate help.}%
   \fi}
 \@onlypreamble\@ifl@t@r
 \def\@parse@version#1/#2/#3#4#5\@nil{#1#2#3#4 }
+\@onlypreamble\@parse@version
 \def\@ifpackagewith{\@if@ptions\@pkgextension}
 \def\@ifclasswith{\@if@ptions\@clsextension}
 \@onlypreamble\@ifpackagewith
@@ -7565,8 +7533,7 @@ Type  H <return>  for immediate help.}%
 \@onlypreamble\@if@ptions
 \def\@if@pti@ns#1#2{%
  \let\reserved@a\@firstoftwo
- \edef\reserved@b{\zap@space#2 \@empty}%
- \@for\reserved@b:=\reserved@b\do{%
+ \@for\reserved@b:=#2\do{%
    \ifx\reserved@b\@empty
    \else
      \expandafter\in@\expandafter{\expandafter,\reserved@b,}{,#1,}%
@@ -7689,10 +7656,8 @@ Type  H <return>  for immediate help.}%
   \csname ds@\CurrentOption\endcsname}
 \@onlypreamble\@use@ption
 \def\ExecuteOptions#1{%
-  \edef\@fortmp{\zap@space#1 \@empty}%
   \def\reserved@a##1\@nil{%
-    \@for\CurrentOption:=\@fortmp\do
-             {\csname ds@\CurrentOption\endcsname}%
+    \@for\CurrentOption:=#1\do{\csname ds@\CurrentOption\endcsname}%
     \edef\CurrentOption{##1}}%
   \expandafter\reserved@a\CurrentOption\@nil}
 \@onlypreamble\ExecuteOptions
@@ -7788,15 +7753,15 @@ Type  H <return>  for immediate help.}%
     \fi
   \else
     \def\reserved@b##1,{%
-      \ifx\@nnil##1\relax\else
-        \ifx\@nnil##1\@nnil\else
+      \ifx\@nil##1\relax\else
+        \ifx\relax##1\relax\else
          \noexpand\@onefilewithoptions##1[{#2}][{#4}]%
          \noexpand\@pkgextension
         \fi
         \expandafter\reserved@b
       \fi}%
       \edef\reserved@a{\zap@space#3 \@empty}%
-      \edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nnil,}%
+      \edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nil,}%
   \fi
   \reserved@a}
 \@onlypreamble\@fileswith@pti@ns
@@ -8164,30 +8129,6 @@ Type  H <return>  for immediate help.}%
     \directlua{require("ltluatex")}
   \endgroup
 }
-\everyjob\expandafter{%
-  \the\everyjob
-  \directlua{%
-%% Horrible hack, locally reset the luatex version number
-%% This is not required for the source version of luaotfload
-%% but is required due to an error in the version check in the
-%% public version (January 2017)
-%% https://github.com/lualatex/luaotfload/issues/387
-%% It is expected that this will be removed before TeXLive 2017
-  local tmp_version=tex.luatexversion %
-  tex.luatexversion=199 %
-  if xpcall(function ()%
-             require('luaotfload-main')%
-            end,texio.write_nl) then %
-  local _void = luaotfload.main ()%
-  else %
-  texio.write_nl('Error in luaotfload: reverting to OT1')%
-  tex.print('\string\\def\string\\encodingdefault{OT1}')%
-  end %
-  tex.luatexversion=tmp_version%
-  }%
-  \let\f@encoding\encodingdefault
-  \expandafter\let\csname ver@luaotfload.sty\endcsname\fmtversion
-  }
 \fi
 %%% From File: ltfinal.dtx
 \tracingstats1
@@ -8200,14 +8141,8 @@ Type  H <return>  for immediate help.}%
 \fi
 \ifx\XeTeXcharclass\@undefined
 \else
-\ifdim\the\XeTeXversion\XeTeXrevision\p@>0.99993\p@
-  \chardef\e@alloc@intercharclass@top=4095
-\else
-  \chardef\e@alloc@intercharclass@top=255
-\fi
 \def\newXeTeXintercharclass{%
- \e@alloc\XeTeXcharclass
-   \chardef\xe@alloc@intercharclass\m@ne\e@alloc@intercharclass@top}
+ \e@alloc\XeTeXcharclass\chardef\xe@alloc@intercharclass\m@ne\@cclv}
 \fi
 \ifx\XeTeXcharclass\@undefined
 \else
@@ -8250,8 +8185,10 @@ Type  H <return>  for immediate help.}%
    \lccode#1=#1
 }
 \reserved@a{`\a}{`\z}
-\reserved@a{"A0}{"BC}
-\reserved@a{"E0}{"FF}
+\ifnum\inputlineno=\m@ne\else
+  \reserved@a{"A0}{"BC}
+  \reserved@a{"E0}{"FF}
+\fi
 \def\reserved@c#1{%
    \count@=#1\advance\count@ by "20
    \uccode#1=#1
@@ -8259,16 +8196,20 @@ Type  H <return>  for immediate help.}%
    \sfcode#1=999
 }
 \reserved@a{`\A}{`\Z}
-\reserved@a{"80}{"9C}
-\reserved@a{"C0}{"DF}
+\ifnum\inputlineno=\m@ne\else
+  \reserved@a{"80}{"9C}
+  \reserved@a{"C0}{"DF}
+\fi
 \uccode`\^^Y=`\I     % dotless i
 \lccode`\^^Y=`\^^Y   % dotless i
 \uccode`\^^Z=`\J     % dotless j, ae in OT1
 \lccode`\^^Z=`\^^Z   % dotless j, ae in OT1
-\lccode`\^^9d=`\i    % dotted I
-\uccode`\^^9d=`\^^9d % dotted I
-\lccode`\^^9e=`\^^9e % d-bar
-\uccode`\^^9e=`\^^d0 % d-bar
+\ifnum\inputlineno=\m@ne\else
+  \lccode`\^^9d=`\i    % dotted I
+  \uccode`\^^9d=`\^^9d % dotted I
+  \lccode`\^^9e=`\^^9e % d-bar
+  \uccode`\^^9e=`\^^d0 % d-bar
+\fi
 \lccode`\^^[=`\^^[   % oe in OT1
 \lccode`\- =`\-   % default hyphen char
 \lccode 127=127   % alternate hyphen char
@@ -8343,6 +8284,7 @@ Type  H <return>  for immediate help.}%
 \reserved@a{0}{`\^^H}
 \reserved@c{`\^^K}
 \reserved@a{`\^^N}{31}
+  \catcode"7F=15
 \ifnum 0%
   \ifx\Umathcode\@undefined\else 1\fi
   \ifx\XeTeXmathcode\@undefined\else 1\fi
@@ -8354,8 +8296,10 @@ Type  H <return>  for immediate help.}%
    \lccode#1=#1
 }
 \reserved@a{`\a}{`\z}
-\reserved@a{"A0}{"BC}
-\reserved@a{"E0}{"FF}
+\ifnum\inputlineno=\m@ne\else
+  \reserved@a{"A0}{"BC}
+  \reserved@a{"E0}{"FF}
+\fi
 \def\reserved@c#1{%
    \count@=#1\advance\count@ by "20
    \uccode#1=#1
@@ -8363,16 +8307,20 @@ Type  H <return>  for immediate help.}%
    \sfcode#1=999
 }
 \reserved@a{`\A}{`\Z}
-\reserved@a{"80}{"9C}
-\reserved@a{"C0}{"DF}
+\ifnum\inputlineno=\m@ne\else
+  \reserved@a{"80}{"9C}
+  \reserved@a{"C0}{"DF}
+\fi
 \uccode`\^^Y=`\I     % dotless i
 \lccode`\^^Y=`\^^Y   % dotless i
 \uccode`\^^Z=`\J     % dotless j, ae in OT1
 \lccode`\^^Z=`\^^Z   % dotless j, ae in OT1
-\lccode`\^^9d=`\i    % dotted I
-\uccode`\^^9d=`\^^9d % dotted I
-\lccode`\^^9e=`\^^9e % d-bar
-\uccode`\^^9e=`\^^d0 % d-bar
+\ifnum\inputlineno=\m@ne\else
+  \lccode`\^^9d=`\i    % dotted I
+  \uccode`\^^9d=`\^^9d % dotted I
+  \lccode`\^^9e=`\^^9e % d-bar
+  \uccode`\^^9e=`\^^d0 % d-bar
+\fi
 \lccode`\^^[=`\^^[   % oe in OT1
 \fi % End of reset block for 8-bit engines
 \DeclareRobustCommand{\MakeUppercase}[1]{{%

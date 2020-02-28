@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: pdflscape
-%% Version: 2016/05/14 v0.11
+%% Version: 2008/08/11 v0.10
 %% 
 %% Copyright (C) 2001, 2004, 2006-2008 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -38,7 +38,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{pdflscape}%
-  [2016/05/14 v0.11 Display of landscape pages in PDF (HO)]
+  [2008/08/11 v0.10 Display of landscape pages in PDF (HO)]
 \let\PLS@option\@empty
 \let\PLS@driver\@empty
 \def\PLS@temp#1#2{%
@@ -48,7 +48,6 @@
   }%
 }
 \PLS@temp{pdftex}{pdftex}
-\PLS@temp{luatex}{pdftex}
 \PLS@temp{dvips}{dvips}
 \PLS@temp{dvipsone}{dvips}
 \PLS@temp{pctexps}{dvips}
@@ -148,11 +147,6 @@
   \PackageError{pdflscape}{%
     Neither pdfTeX, PostScript, nor dvipdfm driver found%
   }\@ehc
-\fi
-\ifx\pdfpageattr\@undefined
-  \ifx\pdfvariable\@undefined\else
-    \protected\edef\pdfpageattr{\pdfvariable pageattr}
-  \fi
 \fi
 \def\PLS@temp{pdftex}
 \ifx\PLS@temp\PLS@driver

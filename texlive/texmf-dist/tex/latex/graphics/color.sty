@@ -12,7 +12,7 @@
 %% 
 %% 
 %% color.dtx Copyright (C) 1994--1999 David Carlisle
-%%           Copyright (C) 2005--2016 David Carlisle, LaTeX3 Project
+%%           Copyright (C) 2005--2015 David Carlisle, LaTeX3 Project
 %%
 %% This file is part of the Standard LaTeX `Graphics Bundle'.
 %% It may be distributed under the terms of the LaTeX Project Public
@@ -23,7 +23,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{color}
-          [2016/07/10 v1.1e Standard LaTeX Color (DPC)]
+          [2016/01/03 v1.1b Standard LaTeX Color (DPC)]
 \edef\Gin@codes{%
  \catcode`\noexpand\^^A\the\catcode`\^^A\relax
  \catcode`\noexpand\"\the\catcode`\"\relax
@@ -51,9 +51,6 @@
     \def\define@color#1#2{%
       \c@lor@special\m@ne{define #1 #2}}}}
 \DeclareOption{debugshow}{\catcode`\^^A=9 \let\GDebug\typeout}
-\newif\ifGin@setpagesize\Gin@setpagesizetrue
-\DeclareOption{setpagesize}{\Gin@setpagesizetrue}
-\DeclareOption{nosetpagesize}{\Gin@setpagesizefalse}
 \DeclareOption{dvips}{\def\Gin@driver{dvips.def}%
                       \def\c@lor@namefile{dvipsnam.def}}
 \DeclareOption{xdvi}{\ExecuteOptions{dvips,monochrome}}
@@ -62,7 +59,6 @@
 \DeclareOption{dvipdfmx}{\def\Gin@driver{dvipdfmx.def}}
 \DeclareOption{pdftex}{\def\Gin@driver{pdftex.def}}
 \DeclareOption{luatex}{\def\Gin@driver{luatex.def}}
-\DeclareOption{dvisvgm}{\def\Gin@driver{dvisvgm.def}}
 \DeclareOption{xetex}{\def\Gin@driver{xetex.def}}
 \DeclareOption{dvipsone}{\def\Gin@driver{dvipsone.def}}
 \DeclareOption{dviwindo}{\ExecuteOptions{dvipsone}}

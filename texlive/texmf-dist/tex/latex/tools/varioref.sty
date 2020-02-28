@@ -35,7 +35,7 @@
 %% given in the file `manifest.txt'.
 %% 
 %% Package varioref to use with LaTeX2e
-%% Copyright (C) 1992-2016  Frank Mittelbach, all rights reserved.
+%% Copyright (C) 1992-2015  Frank Mittelbach, all rights reserved.
 %%
 %% For additions or updates to the language options please contact
 %% the author at
@@ -46,9 +46,23 @@
 %%
 \NeedsTeXFormat{LaTeX2e}[1995/05/16]
 \ProvidesPackage{varioref}
-    [2016/02/16 v1.5c package for extended references (FMi)]
+    [2015/09/22 v1.5b package for extended references (FMi)]
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
 %%
-
 
 \def\vref@addto#1#2{%
   #2%
@@ -635,17 +649,12 @@
   \global\advance\c@vrcnt\@ne
   \vref@pagenum\@tempa{\the\c@vrcnt @vr}%
   \vref@pagenum\@tempb{\the\c@vrcnt @xvr}%
-  \vref@label{\the\c@vrcnt @xvr}%
-  \ifx\@tempa\@tempb
-    \let\vref@may@loop\relax
-  \else
-    \edef\vref@may@loop{%
-      \noexpand\vref@err{\noexpand\vref or \noexpand\vpageref
-              at page boundary
+   \vref@label{\the\c@vrcnt @xvr}%
+    \ifx\@tempa\@tempb\else
+    \vref@err{\noexpand\vref or \noexpand\vpageref at page boundary
               \@tempb-\@tempa\space (may loop)%
               }%
-      }%
-   \fi
+    \fi
   \vrefpagenum\thevpagerefnum{#3}%
   \vref@space
   \ifx\@tempa\thevpagerefnum
@@ -687,17 +696,13 @@
               \fi
             \fi
           \else
-          \let\vref@may@loop\relax % added
-          \reftextfaraway{#3}%
+            \reftextfaraway{#3}%
           \fi
         \fi
        }%
-       {%
-         \let\vref@may@loop\relax %added
-         \reftextfaraway{#3}}%
+       {\reftextfaraway{#3}}%
   \fi
    \vref@label{\the\c@vrcnt @vr}%
-   \vref@may@loop
 }
 \def\vref@label#1{\@bsphack
   \protected@write\@auxout{}%

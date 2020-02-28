@@ -10,13 +10,11 @@
 %% ltdefns.dtx  (with options: `latexrelease')
 %% ltboxes.dtx  (with options: `latexrelease')
 %% ltmath.dtx  (with options: `latexrelease')
-%% ltpictur.dtx  (with options: `latexrelease')
 %% ltoutenc.dtx  (with options: `latexrelease')
 %% ltcounts.dtx  (with options: `latexrelease')
 %% ltlength.dtx  (with options: `latexrelease')
 %% ltfloat.dtx  (with options: `latexrelease')
 %% ltoutput.dtx  (with options: `latexrelease')
-%% ltclass.dtx  (with options: `latexrelease')
 %% ltspace.dtx  (with options: `latexrelease')
 %% ltplain.dtx  (with options: `latexrelease')
 %% ltfssdcl.dtx  (with options: `latexrelease')
@@ -63,7 +61,7 @@
 %% extension .ins) which are part of the distribution.
 %%% From File: ltvers.dtx
 \edef\latexreleaseversion
-   {2017/01/01}
+   {2016/02/01}
 \def\IncludeInRelease#1{\kernel@ifnextchar[%
   {\@IncludeInRelease{#1}}
   {\@IncludeInRelease{#1}[#1]}}
@@ -87,7 +85,7 @@
 \long\def\@gobble@IncludeInRelease#1\EndIncludeInRelease{}
 \let\EndIncludeInRelease\relax
 \ProvidesPackage{latexrelease}
-          [2016/12/29 v1.0h LaTeX release emulation and tests]
+          [2015/06/22 v1.0f LaTeX release emulation and tests]
 \NeedsTeXFormat{LaTeX2e}[1996/06/01]
 \DeclareOption*{%
   \def\@IncludeInRelease#1[#2]{\@IncludeInRele@se{#1}}%
@@ -122,7 +120,7 @@
   >\expandafter\@parse@version\latexreleaseversion//00\@nil
 \PackageWarningNoLine{latexrelease}{%
 The current package is for an older LaTeX format:\MessageBreak
-LaTeX \latexreleaseversion\space\MessageBreak
+LaTeX \fmtversion\space\MessageBreak
 Obtain a newer version of this package!}
 \expandafter\endinput
 \fi
@@ -219,7 +217,6 @@ of this package available from CTAN}
   \@ifnextchar(%)
     \@makepicbox
     {\@ifnextchar[\@makebox\mbox}}%
-\expandafter\let\csname makebox \endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
                  {\savebox}{Make \savebox robust}%
@@ -232,7 +229,6 @@ of this package available from CTAN}
 \def\savebox#1{%
   \@ifnextchar(%)
     {\@savepicbox#1}{\@ifnextchar[{\@savebox#1}{\sbox#1}}}%
-\expandafter\let\csname savebox \endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
                  {\framebox}{Make \framebox robust}%
@@ -245,7 +241,6 @@ of this package available from CTAN}
 \def\framebox{%
   \@ifnextchar(%)
     \@framepicbox{\@ifnextchar[\@framebox\fbox}}%
-\expandafter\let\csname framebox \endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
                  {\parbox}{Make \parbox robust}%
@@ -260,7 +255,6 @@ of this package available from CTAN}
   \@ifnextchar[%]
     \@iparbox
     {\@iiiparbox c\relax[s]}}%
-\expandafter\let\csname parbox \endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
                  {\rule}{Make \rule robust}%
@@ -269,7 +263,6 @@ of this package available from CTAN}
 \IncludeInRelease{0000/00/00}%
                  {\rule}{Make \rule robust}%
 \def\rule{\@ifnextchar[\@rule{\@rule[\z@]}}%
-\expandafter\let\csname rule \endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
                  {\raisebox}{Make \raisebox robust}%
@@ -282,7 +275,6 @@ of this package available from CTAN}
 \def\raisebox#1{%
   \leavevmode
   \@ifnextchar[{\@rsbox{#1}}{\@irsbox{#1}[]}}
-\expandafter\let\csname raisebox \endcsname\@undefined
 \EndIncludeInRelease
 %%% From File: ltmath.dtx
 \IncludeInRelease{2015/01/01}{\(}{Make \( robust}%
@@ -294,10 +286,8 @@ of this package available from CTAN}
 \IncludeInRelease{0000/00/00}{\(}{Make \( robust}%
 \def\({%
   \relax\ifmmode\@badmath\else$\fi}%
-\expandafter\let\csname\string( \endcsname\@undefined
 \def\){%
   \relax\ifmmode\ifinner$\else\@badmath\fi\else \@badmath\fi}%
-\expandafter\let\csname\string) \endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}{\[}{Make \[ robust}%
 \DeclareRobustCommand\[{%
@@ -336,7 +326,6 @@ of this package available from CTAN}
       $$%%$$ BRACE MATCH HACK
    \fi
 }%
-\expandafter\let\csname\string[ \endcsname\@undefined
 \def\]{%
    \relax\ifmmode
       \ifinner
@@ -349,93 +338,6 @@ of this package available from CTAN}
    \fi
    \ignorespaces
 }%
-\expandafter\let\csname\string] \endcsname\@undefined
-\EndIncludeInRelease
-%%% From File: ltpictur.dtx
-\IncludeInRelease{2016/03/31}%
-                 {\@ovhlinetrue}%
-                 {Avoid almost zero length leaders}%
-\newif\if@ovvline \@ovvlinetrue
-\newif\if@ovhline \@ovhlinetrue
-\gdef\@oval(#1,#2)[#3]{\begingroup\boxmaxdepth \maxdimen
-  \@ovttrue \@ovbtrue \@ovltrue \@ovrtrue
-  \@ovvlinefalse \@ovhlinefalse
-  \@tfor\reserved@a :=#3\do{\csname @ov\reserved@a false\endcsname}%
-  \@ovxx #1\unitlength
-  \@ovyy #2\unitlength
-  \@tempdimb \ifdim \@ovyy >\@ovxx \@ovxx \@ovvlinetrue
-  \else \@ovyy \ifdim \@ovyy =\@ovxx \else \@ovhlinetrue \fi\fi
-  \advance \@tempdimb -2\p@
-  \@getcirc \@tempdimb
-  \@ovro \ht\@tempboxa \@ovri \dp\@tempboxa
-  \@ovdx\@ovxx \advance\@ovdx -\@tempdima \divide\@ovdx \tw@
-  \@ovdy\@ovyy \advance\@ovdy -\@tempdima \divide\@ovdy \tw@
-  \ifdim \@ovdx >\z@ \@ovhlinetrue \fi
-  \ifdim \@ovdy >\z@ \@ovvlinetrue \fi
-  \@circlefnt \setbox\@tempboxa
-  \hbox{\if@ovr \@ovvert32\kern -\@tempdima \fi
-  \if@ovl \kern \@ovxx \@ovvert01\kern -\@tempdima \kern -\@ovxx \fi
-  \if@ovt \@ovhorz \kern -\@ovxx \fi
-  \if@ovb \raise \@ovyy \@ovhorz \fi}\advance\@ovdx\@ovro
-  \advance\@ovdy\@ovro \ht\@tempboxa\z@ \dp\@tempboxa\z@
-  \@put{-\@ovdx}{-\@ovdy}{\box\@tempboxa}%
-  \endgroup}
-\gdef\@ovvert#1#2{\vbox to\@ovyy{%
-    \if@ovb \@tempcntb \@tempcnta \advance \@tempcntb #1\relax
-      \kern -\@ovro \hbox{\char \@tempcntb}\nointerlineskip
-    \else \kern \@ovri \kern \@ovdy \fi
-    \if@ovvline \leaders\vrule \@width \@wholewidth \fi
-    \vfil \nointerlineskip
-    \if@ovt \@tempcntb \@tempcnta \advance \@tempcntb #2\relax
-      \hbox{\char \@tempcntb}%
-    \else \kern \@ovdy \kern \@ovro \fi}}
-\gdef\@ovhorz{\hb@xt@\@ovxx{\kern \@ovro
-    \if@ovr \else \kern \@ovdx \fi
-    \if@ovhline \leaders \hrule \@height \@wholewidth \fi
-    \hfil
-    \if@ovl \else \kern \@ovdx \fi
-    \kern \@ovri}}
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}%
-                 {\@ovhlinetrue}%
-                 {Avoid almost zero length leaders}%
-\let\if@ovvline\@undefined
-\let\if@ovhline\@undefined
-\gdef\@oval(#1,#2)[#3]{\begingroup\boxmaxdepth \maxdimen
-  \@ovttrue \@ovbtrue \@ovltrue \@ovrtrue
-  \@tfor\reserved@a :=#3\do
-                {\csname @ov\reserved@a false\endcsname}%
-  \@ovxx #1\unitlength
-  \@ovyy #2\unitlength
-  \@tempdimb \ifdim \@ovyy >\@ovxx \@ovxx\else \@ovyy \fi
-  \advance \@tempdimb -2\p@
-  \@getcirc \@tempdimb
-  \@ovro \ht\@tempboxa \@ovri \dp\@tempboxa
-  \@ovdx\@ovxx \advance\@ovdx -\@tempdima \divide\@ovdx \tw@
-  \@ovdy\@ovyy \advance\@ovdy -\@tempdima \divide\@ovdy \tw@
-  \@circlefnt \setbox\@tempboxa
-  \hbox{\if@ovr \@ovvert32\kern -\@tempdima \fi
-  \if@ovl
-   \kern \@ovxx \@ovvert01\kern -\@tempdima \kern -\@ovxx
-  \fi
-  \if@ovt \@ovhorz \kern -\@ovxx \fi
-  \if@ovb \raise \@ovyy \@ovhorz \fi}\advance\@ovdx\@ovro
-  \advance\@ovdy\@ovro \ht\@tempboxa\z@ \dp\@tempboxa\z@
-  \@put{-\@ovdx}{-\@ovdy}{\box\@tempboxa}%
-  \endgroup}
-\gdef\@ovvert#1#2{\vbox to\@ovyy{%
-    \if@ovb \@tempcntb \@tempcnta \advance \@tempcntb #1\relax
-      \kern -\@ovro \hbox{\char \@tempcntb}\nointerlineskip
-    \else \kern \@ovri \kern \@ovdy \fi
-    \leaders\vrule \@width \@wholewidth\vfil \nointerlineskip
-    \if@ovt \@tempcntb \@tempcnta \advance \@tempcntb #2\relax
-      \hbox{\char \@tempcntb}%
-    \else \kern \@ovdy \kern \@ovro \fi}}
-\gdef\@ovhorz{\hb@xt@\@ovxx{\kern \@ovro
-    \if@ovr \else \kern \@ovdx \fi
-    \leaders \hrule \@height \@wholewidth \hfil
-    \if@ovl \else \kern \@ovdx \fi
-    \kern \@ovri}}
 \EndIncludeInRelease
 %%% From File: ltoutenc.dtx
 \IncludeInRelease{2015/10/01}{\textcommabelow}{comma accent}%
@@ -446,24 +348,6 @@ of this package available from CTAN}
 \EndIncludeInRelease
 \IncludeInRelease{0000/00/00}{\textcommabelow}{comma accent}%
 \let\textcommabelow\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-G\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-K\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-k\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-L\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-l\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-N\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-n\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-R\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-r\endcsname\@undefined
 \EndIncludeInRelease
 \IncludeInRelease{2016/02/01}{\textcommaabove}{comma above}%
 \DeclareTextCommandDefault\textcommaabove[1]{%
@@ -481,10 +365,6 @@ of this package available from CTAN}
 \EndIncludeInRelease
 \IncludeInRelease{0000/00/00}{\textcommaabove}{comma above}%
 \let\textcommaabove\@undefined
-\expandafter
-  \let\csname\string\OT1\string\c-g\endcsname\@undefined
-\expandafter
-  \let\csname\string\T1\string\c-g\endcsname\@undefined
 \EndIncludeInRelease
 %%% From File: ltcounts.dtx
 \IncludeInRelease{2015/01/01}{\@stpelt}
@@ -517,7 +397,7 @@ of this package available from CTAN}
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}{\TextOrMath}{\TextOrMath}%
 \begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname protected\endcsname\relax
+\expandafter\ifx\csname eTeXversion\endcsname\relax
 \DeclareRobustCommand\TextOrMath{%
   \ifmmode  \expandafter\@secondoftwo
   \else     \expandafter\@firstoftwo  \fi}
@@ -1263,26 +1143,6 @@ of this package available from CTAN}
   \endgroup
 }%
 \EndIncludeInRelease
-\IncludeInRelease{2017/01/01}%
-  {\@makefcolumn}{negative height floats}%
-\def\@makefcolumn #1{%
-  \begingroup
-    \@fpmin -\maxdimen
-    \let \@testfp \@gobble
-    \@tryfcolumn #1%
-  \endgroup
-}
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}%
-  {\@makefcolumn}{negative height floats}%
-\def\@makefcolumn #1{%
-  \begingroup
-    \@fpmin \z@
-    \let \@testfp \@gobble
-    \@tryfcolumn #1%
-  \endgroup
-}
-\EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
   {\@outputdblcol}{2 column marks}%
 \def\@outputdblcol{%
@@ -1356,114 +1216,8 @@ of this package available from CTAN}
   \fi
 }%
 \EndIncludeInRelease
-%%% From File: ltclass.dtx
-\IncludeInRelease{2017/01/01}%
-                 {\@if@pti@ns}{Spaces in option clash check}%
-\def\@if@pti@ns#1#2{%
- \let\reserved@a\@firstoftwo
- \edef\reserved@b{\zap@space#2 \@empty}%
- \@for\reserved@b:=\reserved@b\do{%
-   \ifx\reserved@b\@empty
-   \else
-     \expandafter\in@\expandafter{\expandafter,\reserved@b,}{,#1,}%
-     \ifin@
-     \else
-       \let\reserved@a\@secondoftwo
-     \fi
-   \fi
- }%
- \reserved@a}
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}%
-                 {\@if@pti@ns}{Spaces in option clash check}%
-\def\@if@pti@ns#1#2{%
- \let\reserved@a\@firstoftwo
- \@for\reserved@b:=#2\do{%
-  \ifx\reserved@b\@empty
-   \else
-   \expandafter\in@\expandafter
-                   {\expandafter,\reserved@b,}{,#1,}%
-    \ifin@
-    \else
-     \let\reserved@a\@secondoftwo
-    \fi
-  \fi
- }%
- \reserved@a}
-\IncludeInRelease{2017/01/01}%
-                 {\@if@pti@ns}{Spaces in \ExecuteOptions}%
-\def\ExecuteOptions#1{%
-  \edef\@fortmp{\zap@space#1 \@empty}%
-  \def\reserved@a##1\@nil{%
-    \@for\CurrentOption:=\@fortmp\do
-             {\csname ds@\CurrentOption\endcsname}%
-    \edef\CurrentOption{##1}}%
-  \expandafter\reserved@a\CurrentOption\@nil}
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}%
-                 {\@if@pti@ns}{Spaces in \ExecuteOptions}%
-\def\ExecuteOptions#1{%
-  \def\reserved@a##1\@nil{%
-    \@for\CurrentOption:=#1\do
-             {\csname ds@\CurrentOption\endcsname}%
-    \edef\CurrentOption{##1}}%
-  \expandafter\reserved@a\CurrentOption\@nil}
-\IncludeInRelease{2017/01/01}%
-        {\@fileswith@pti@ns}{ifx tests in \@fileswith@pti@ns}%
-\def\@fileswith@pti@ns#1[#2]#3[#4]{%
-  \ifx#1\@clsextension
-    \ifx\@classoptionslist\relax
-      \xdef\@classoptionslist{\zap@space#2 \@empty}%
-      \def\reserved@a{%
-        \@onefilewithoptions#3[{#2}][{#4}]#1%
-        \@documentclasshook}%
-    \else
-      \def\reserved@a{%
-        \@onefilewithoptions#3[{#2}][{#4}]#1}%
-    \fi
-  \else
-    \def\reserved@b##1,{%
-      \ifx\@nnil##1\relax\else
-        \ifx\@nnil##1\@nnil\else
-         \noexpand\@onefilewithoptions##1[{#2}][{#4}]%
-         \noexpand\@pkgextension
-        \fi
-        \expandafter\reserved@b
-      \fi}%
-      \edef\reserved@a{\zap@space#3 \@empty}%
-      \edef\reserved@a{\expandafter\reserved@b\reserved@a,\@nnil,}%
-  \fi
-  \reserved@a}
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}%
-        {\@fileswith@pti@ns}{ifx tests in \@fileswith@pti@ns}%
-\def\@fileswith@pti@ns#1[#2]#3[#4]{%
-  \ifx#1\@clsextension
-    \ifx\@classoptionslist\relax
-      \xdef\@classoptionslist{\zap@space#2 \@empty}%
-      \def\reserved@a{%
-        \@onefilewithoptions#3[{#2}][{#4}]#1%
-        \@documentclasshook}%
-    \else
-      \def\reserved@a{%
-        \@onefilewithoptions#3[{#2}][{#4}]#1}%
-    \fi
-  \else
-    \def\reserved@b##1,{%
-      \ifx\@nil##1\relax\else
-        \ifx\relax##1\relax\else
-         \noexpand\@onefilewithoptions##1[{#2}][{#4}]%
-         \noexpand\@pkgextension
-        \fi
-        \expandafter\reserved@b
-      \fi}%
-      \edef\reserved@a{\zap@space#3 \@empty}%
-      \edef\reserved@a{%
-        \expandafter\reserved@b\reserved@a,\@nil,}%
-  \fi
-  \reserved@a}
 %%% From File: ltspace.dtx
-\IncludeInRelease{2015/10/01}%
+\IncludeInRelease{2015/01/01}%
                  {\@esphack}{hyphenation after space hack}%
 \def\@esphack{%
   \relax
@@ -1501,7 +1255,7 @@ of this package available from CTAN}
   \fi}%
 \EndIncludeInRelease
 \IncludeInRelease{2015/01/01}%
-                 {\@Esphack}{hyphenation after space hack}%
+                 {\Eesphack}{hyphenation after space hack}%
 \def\@Esphack{%
   \relax
   \ifhmode
@@ -1618,12 +1372,8 @@ of this package available from CTAN}
 \fi
 \def\new@mathgroup
   {\e@alloc\mathgroup\chardef{\count18}\m@ne\e@mathgroup@top}
+\def\newlanguage  {\e@alloc\language \chardef{\count19}\m@ne\@cclvi}
 \let\newfam\new@mathgroup
-\ifx\directlua\@undefined
-  \def\newlanguage  {\e@alloc\language \chardef{\count19}\m@ne\@cclvi}
-\else
-  \def\newlanguage  {\e@alloc\language \chardef{\count19}\m@ne{16384}}
-\fi
 \EndIncludeInRelease
 \IncludeInRelease{0000/00/00}%
                  {\newcount}{Extended Allocation}%
@@ -1722,7 +1472,7 @@ of this package available from CTAN}
 \count@#1\relax
 \ifnum\count@>\z@
 \newinsert\reserved@a
-\global\expandafter\chardef
+\expandafter\chardef
             \csname bx@\the\allocationnumber\endcsname\allocationnumber
 \@cons\@freelist{\csname bx@\the\allocationnumber\endcsname}%
 \advance\count@\m@ne
@@ -1738,8 +1488,8 @@ of this package available from CTAN}
   \ch@ck1\count@\dimen
   \ch@ck2\count@\skip
   \ch@ck4\count@\box
-\global\e@alloc@chardef\float@count\count@
-\global\expandafter\e@alloc@chardef
+\e@alloc@chardef\float@count\count@
+\expandafter\e@alloc@chardef
             \csname bx@\the\float@count\endcsname\float@count
 \@cons\@freelist{\csname bx@\the\float@count\endcsname}%
 \expandafter
@@ -1771,7 +1521,6 @@ of this package available from CTAN}
 \fi
 \def\newinsert#1{%
 \@tempswafalse
-\global\advance\insc@unt\m@ne
 \ifnum\count10<\insc@unt
 \ifnum\count11<\insc@unt
 \ifnum\count12<\insc@unt
@@ -1779,9 +1528,9 @@ of this package available from CTAN}
   \@tempswatrue
 \fi\fi\fi\fi
 \if@tempswa
+\global\advance\insc@unt\m@ne
 \allocationnumber\insc@unt
 \else
-\global\advance\insc@unt\@ne
   \extrafloats\@ne
   \@next\@currbox\@freelist
     {\ifnum\@currbox<\e@insert@top
@@ -2136,78 +1885,6 @@ of this package available from CTAN}
       \csname\curr@fontshape/\f@size\endcsname}%
     \pickup@font}
 \EndIncludeInRelease
-\IncludeInRelease{2017/01/01}{\showhyphens}%
-                 {XeTeX support for \showhyphens}%
-\ifx\XeTeXcharclass\@undefined
-\gdef\showhyphens#1{%
-  \setbox0\vbox{%
-    \color@begingroup
-    \everypar{}%
-    \parfillskip\z@skip\hsize\maxdimen
-    \normalfont
-    \pretolerance\m@ne\tolerance\m@ne\hbadness\z@\showboxdepth\z@\ #1%
-    \color@endgroup}}
-\else
-\long\def\showhyphens#1{%
-  \setbox0\vbox{%
-    \usefont{TU}{lmr}{m}{n}%
-    \hsize 1sp %
-    \hbadness\@M
-    \hfuzz\maxdimen
-    \tracingonline\z@
-    \everypar={}%
-    \leftskip\z@skip
-    \rightskip\z@skip
-    \parfillskip\z@skip
-    \hyphenpenalty=-\@M
-    \pretolerance\m@ne
-    \interlinepenalty\z@
-    \clubpenalty\z@
-    \widowpenalty\z@
-    \brokenpenalty1127 %
-    \setbox\z@\hbox{}%
-    \noindent
-    \hskip\z@skip
-    #1%
-    \par
-     \loop
-     \@tempswafalse
-     \ifnum\lastnodetype=11\unskip\@tempswatrue\fi
-     \ifnum\lastnodetype=12\unkern\@tempswatrue\fi
-     \ifnum\lastnodetype=13 %
-      \count@\lastpenalty
-      \unpenalty\@tempswatrue
-    \fi
-    \ifnum\lastnodetype=\@ne
-     \setbox\tw@\lastbox\@tempswatrue
-     \setbox0\hbox{\unhbox\tw@\unskip\unskip\unpenalty
-                   \ifnum\count@=1127 \else\ \fi
-                   \unhbox0}%
-     \count@\z@
-    \fi
-    \if@tempswa
-    \repeat
-   \hbadness\z@
-   \hsize\maxdimen
-   \showboxdepth\z@
-   \tolerance\m@ne
-   \hyphenpenalty\z@
-   \noindent\unhbox\z@
-}}
-\fi
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}{\showhyphens}%
-                 {XeTeX support for \showhyphens}%
-\gdef\showhyphens#1{%
-  \setbox0\vbox{%
-    \color@begingroup
-    \everypar{}%
-    \parfillskip\z@skip\hsize\maxdimen
-    \normalfont
-    \pretolerance\m@ne\tolerance\m@ne
-    \hbadness\z@\showboxdepth\z@\ #1%
-    \color@endgroup}}
-\EndIncludeInRelease
 %%% From File: ltfsscmp.dtx
 %% Copyright (C) 1989-1995 Frank Mittelbach and Rainer Sch\"opf,
 %% all rights reserved.
@@ -2531,37 +2208,6 @@ of this package available from CTAN}
 \let\e@alloc@luachunk@count\@undefined
 \directlua{luatexbase.uninstall()}
 \EndIncludeInRelease
-\IncludeInRelease{2017/01/01}%
-                 {\fontencoding}{TU in everyjob}%
-\fontencoding{TU}\let\encodingdefault\f@encoding
-\ifx\directlua\@undefined\else
-  \directlua{%
-%% Horrible hack, locally reset the luatex version number
-%% This is not required for the source version of luaotfload
-%% but is required due to an error in the version check in the
-%% public version (January 2017)
-%% https://github.com/lualatex/luaotfload/issues/387
-%% It is expected that this will be removed before TeXLive 2017
-  local tmp_version=tex.luatexversion %
-  tex.luatexversion=199 %
-  if xpcall(function ()%
-             require('luaotfload-main')%
-            end,texio.write_nl) then %
-  local _void = luaotfload.main ()%
-  else %
-  texio.write_nl('Error in luaotfload: reverting to OT1')%
-  tex.print('\string\\def\string\\encodingdefault{OT1}')%
-  end %
-  tex.luatexversion=tmp_version%
-  }%
-  \let\f@encoding\encodingdefault
-  \expandafter\let\csname ver@luaotfload.sty\endcsname\fmtversion
-\fi
-\EndIncludeInRelease
-\IncludeInRelease{0000/00/00}%
-                 {\fontencoding}{TU in everyjob}%
-\fontencoding{OT1}\let\encodingdefault\f@encoding
-\EndIncludeInRelease
 \fi
 %%% From File: ltfinal.dtx
 \IncludeInRelease{2015/01/01}%
@@ -2579,14 +2225,8 @@ of this package available from CTAN}
               {\newXeTeXintercharclass}{Extended Allocation}%
 \ifx\XeTeXcharclass\@undefined
 \else
-\ifdim\the\XeTeXversion\XeTeXrevision\p@>0.99993\p@
-  \chardef\e@alloc@intercharclass@top=4095
-\else
-  \chardef\e@alloc@intercharclass@top=255
-\fi
 \def\newXeTeXintercharclass{%
- \e@alloc\XeTeXcharclass
-   \chardef\xe@alloc@intercharclass\m@ne\e@alloc@intercharclass@top}
+ \e@alloc\XeTeXcharclass\chardef\xe@alloc@intercharclass\m@ne\@cclv}
 \fi
 \EndIncludeInRelease
 \IncludeInRelease{0000/00/00}%
@@ -2667,24 +2307,24 @@ of this package available from CTAN}
   {\XeTeXintercharclasses}{XeTeX character classes}%
   \ifx\XeTeXinterchartoks\undefined
   \else
-   \input{load-unicode-xetex-classes}
-   \gdef\xtxHanGlue{\hskip0pt plus 0.1em\relax}
-   \gdef\xtxHanSpace{\hskip0.2em plus 0.2em minus 0.1em\relax}
-   \global\XeTeXinterchartoks 0 1 = {\xtxHanSpace}
-   \global\XeTeXinterchartoks 0 2 = {\xtxHanSpace}
-   \global\XeTeXinterchartoks 0 3 = {\nobreak\xtxHanSpace}
-   \global\XeTeXinterchartoks 1 0 = {\xtxHanSpace}
-   \global\XeTeXinterchartoks 2 0 = {\nobreak\xtxHanSpace}
-   \global\XeTeXinterchartoks 3 0 = {\xtxHanSpace}
-   \global\XeTeXinterchartoks 1 1 = {\xtxHanGlue}
-   \global\XeTeXinterchartoks 1 2 = {\xtxHanGlue}
-   \global\XeTeXinterchartoks 1 3 = {\nobreak\xtxHanGlue}
-   \global\XeTeXinterchartoks 2 1 = {\nobreak\xtxHanGlue}
-   \global\XeTeXinterchartoks 2 2 = {\nobreak\xtxHanGlue}
-   \global\XeTeXinterchartoks 2 3 = {\xtxHanGlue}
-   \global\XeTeXinterchartoks 3 1 = {\xtxHanGlue}
-   \global\XeTeXinterchartoks 3 2 = {\xtxHanGlue}
-   \global\XeTeXinterchartoks 3 3 = {\nobreak\xtxHanGlue}
+    \input{load-unicode-xetex-classes}
+    \gdef\xtxHanGlue{\hskip0pt plus 0.1em\relax}
+    \gdef\xtxHanSpace{\hskip0.2em plus 0.2em minus 0.1em\relax}
+    \global\XeTeXinterchartoks 0 1 = {\xtxHanSpace}
+    \global\XeTeXinterchartoks 0 2 = {\xtxHanSpace}
+    \global\XeTeXinterchartoks 0 3 = {\nobreak\xtxHanSpace}
+    \global\XeTeXinterchartoks 1 0 = {\xtxHanSpace}
+    \global\XeTeXinterchartoks 2 0 = {\nobreak\xtxHanSpace}
+    \global\XeTeXinterchartoks 3 0 = {\xtxHanSpace}
+    \global\XeTeXinterchartoks 1 1 = {\xtxHanGlue}
+    \global\XeTeXinterchartoks 1 2 = {\xtxHanGlue}
+    \global\XeTeXinterchartoks 1 3 = {\nobreak\xtxHanGlue}
+    \global\XeTeXinterchartoks 2 1 = {\nobreak\xtxHanGlue}
+    \global\XeTeXinterchartoks 2 2 = {\nobreak\xtxHanGlue}
+    \global\XeTeXinterchartoks 2 3 = {\xtxHanGlue}
+    \global\XeTeXinterchartoks 3 1 = {\xtxHanGlue}
+    \global\XeTeXinterchartoks 3 2 = {\xtxHanGlue}
+    \global\XeTeXinterchartoks 3 3 = {\nobreak\xtxHanGlue}
   \fi
 \EndIncludeInRelease
 \endinput

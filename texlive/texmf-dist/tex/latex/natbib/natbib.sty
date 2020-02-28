@@ -740,8 +740,8 @@
 \DeclareRobustCommand\citefullauthor
    {\citeauthor*}
 \newcommand\defcitealias[2]{%
-   \@ifundefined{al@#1\@extra@b@citeb}{}
-   {\PackageWarning{natbib}{Overwriting existing alias for citation #1}}
+   \@ifundefined{al@#1\@extra@b@citeb}{}%
+   {\PackageWarning{natbib}{Overwriting existing alias for citation #1}}%
    \@namedef{al@#1\@extra@b@citeb}{#2}}
 \DeclareRobustCommand\citetalias{\begingroup
    \NAT@swafalse\let\NAT@ctype\thr@@\NAT@parfalse\NAT@citetp}

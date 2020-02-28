@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: bookmark
-%% Version: 2016/05/17 v1.26
+%% Version: 2011/12/02 v1.24
 %% 
 %% Copyright (C) 2007-2011 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -37,7 +37,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{bookmark}%
-  [2016/05/17 v1.26 PDF bookmarks (HO)]%
+  [2011/12/02 v1.24 PDF bookmarks (HO)]%
 \begingroup\expandafter\expandafter\expandafter\endgroup
 \expandafter\ifx\csname numexpr\endcsname\relax
   \def\BKM@CalcExpr#1#2#3#4{%
@@ -600,11 +600,6 @@
 \providecommand*{\BookmarkDriverDefault}{dvips}
 \ifpdf
   \def\BKM@driver{pdftex}%
-  \ifx\pdfoutline\@undefined
-    \ifx\pdfextension\@undefined\else
-      \protected\def\pdfoutline{\pdfextension outline }
-    \fi
-  \fi
 \else
   \ifxetex
     \def\BKM@driver{dvipdfm}%

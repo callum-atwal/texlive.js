@@ -1,0 +1,167 @@
+% --------------------------------------------------------------------------
+%
+% the CHEMMACROS package -- module: `chemformula'
+%
+% --------------------------------------------------------------------------
+% Clemens Niederberger
+% --------------------------------------------------------------------------
+% https://github.org/cgnieder/chemmacros/
+% contact@mychemistry.eu
+% --------------------------------------------------------------------------
+% If you have any ideas, questions, suggestions or bugs to report, please
+% feel free to contact me.
+% --------------------------------------------------------------------------
+% Copyright 2011-2016 Clemens Niederberger
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Clemens Niederberger.
+% --------------------------------------------------------------------------
+\ChemModule{chemformula}{2015/10/13 integration of chemical formulas}
+
+\RequirePackage{amstext}
+\chemmacros_load_module:n {charges}
+
+\msg_new:nnn {chemmacros} {unknown-formula-method}
+  {
+    You~ chose~ the~ formula~ method~ `#1'~ which~ is~ not~ available.~ Valid~
+    methods~ are~ (the~ recommended~ choice)~ `chemformula'~ and~ `mhchem'.~
+    I'm~ falling~ back~ to~ `chemformula'~ now.
+  }
+
+\msg_new:nnn {chemmacros} {default-formula-method}
+  {
+    You~ haven't~ chosen~ a~ formula~ method~ so~ I'm~ assuming~ the~ default~
+    method~ `chemformula'.
+  }
+
+\msg_new:nnn {chemmacros} {formula-conflict}
+  {
+    You~ have~ loaded~ both~ `mhchem'~ and~ `chemformula'!~ You~ should~
+    decide~ for~ only~ one~ of~ both~ packages~ for~ having~ a~ consistent~
+    layout.~ I~ will~ use~ `chemformula'.
+  }
+
+\bool_new:N \l__chemmacros_formula_method_set_bool
+
+\tl_new:N \g_chemmacros_formula_method_tl
+\tl_gset:Nn \g_chemmacros_formula_method_tl {chemformula}
+
+\cs_new_protected:Npn \chemmacros_set_formula_method:n #1
+  {
+    \bool_if:NF \l__chemmacros_formula_method_set_bool
+      {
+        \str_case:nnTF {#1}
+          {
+            {chemformula} {
+              \chemmacros_integrate_package:nnn {} {chemformula} {2015/09/08}
+              \tl_gset:Nn \g_chemmacros_formula_method_tl {chemformula}
+            }
+            {mhchem} {
+              \chemmacros_integrate_package:nnn {version=4} {mhchem} {}
+              \cs_set_protected:Npn \chemmacros_chemformula:n ##1 { \ce {##1} }
+              \cs_set_protected:Npn \chemmacros_reaction:n ##1 { \ce {##1} }
+              \chemmacros_after_module:nn {charges}
+                {
+                  \cs_set_protected:Npn \chemmacros_elpair:n ##1 { \ce{##1} : }
+                  \cs_set_protected:Npn \chemmacros_plus:  { + }
+                  \cs_set_protected:Npn \chemmacros_minus: { - }
+                  \cs_set_protected:Npn \chemmacros_formal_plus: { \ensuremath{\oplus} }
+                  \cs_set_protected:Npn \chemmacros_formal_minus: { \ensuremath{\ominus} }
+                  \cs_set_protected:Npn \fplus  { \ensuremath{\oplus} }
+                  \cs_set_protected:Npn \fminus { \ensuremath{\ominus} }
+                }
+              \tl_gset:Nn \g_chemmacros_formula_method_tl {mhchem}
+            }
+          }
+          { \bool_set_true:N \l__chemmacros_formula_method_set_bool }
+          { \bool_set_false:N \l__chemmacros_formula_method_set_bool }
+      }
+  }
+\cs_generate_variant:Nn \chemmacros_set_formula_method:n {V}
+
+% --------------------------------------------------------------------------
+% let's make use of `chemformula' inside some of `chemmacros' commands:
+\cs_new_protected:Npn \chemmacros_chemformula:n #1
+  { \chemformula_chcpd:nn {} {#1} }
+\cs_generate_variant:Nn \chemmacros_chemformula:n { x,V }
+
+\cs_new_protected:Npn \chemmacros_reaction:n #1
+  { \chemformula_ch:nn {} {#1} }
+
+% for module writers prefering traditional 2e programming:
+\cs_new_protected:Npn \chemmacros@formula #1 { \chemmacros_chemformula:n {#1} }
+\cs_new_protected:Npn \chemmacros@reaction #1 { \chemmacros_reaction:n {#1} }
+
+% --------------------------------------------------------------------------
+\ChemCompatibilityTo{5.0}
+\chemmacros_set_formula_method:n {chemformula}
+\EndChemCompatibility
+
+\ChemCompatibilityFrom{5.1}
+\chemmacros_define_global_keys:n
+  {
+    formula          .choices:nn =
+      { chemformula , mhchem }
+      { \chemmacros_set_formula_method:V \l_keys_choice_tl } ,
+    formula / unknown .code:n  =
+      \msg_warning:nnn {chemmacros} {unknown-formula-method} {#1}
+      \tl_gset:Nn \g_chemmacros_formula_method_tl {chemformula}
+  }
+\EndChemCompatibility
+
+\cs_new_protected:Npn \chemmacros_check_formula_method:
+  {
+    \bool_if:nTF
+      {
+        \chemmacros_if_package_loaded_p:n {chemformula} &&
+        \chemmacros_if_package_loaded_p:n {mhchem} &&
+      }
+      {
+        \msg_warning:nn {chemmacros} {formula-conflict}
+        \bool_if:NF \l__chemmacros_formula_method_set_bool
+          {
+            \msg_info:nn {chemmacros} {default-formula-method}
+            \chemmacros_set_formula_method:n {chemformula}
+          }
+      }
+      {
+        \chemmacros_if_package_loaded:nTF {mhchem}
+          { \chemmacros_set_formula_method:n {mhchem} }
+          {
+            \chemmacros_if_package_loaded:nF {chemformula}
+              { \msg_info:nn {chemmacros} {default-formula-method} }
+            \chemmacros_set_formula_method:n {chemformula}
+          }
+      }
+  }
+
+\AtEndPreamble
+  {
+    \bool_if:NF \l__chemmacros_formula_method_set_bool
+      {
+        \chemmacros_if_compatiblity:nnTF {>=} {5.2}
+          { \chemmacros_check_formula_method: }
+          {
+            \msg_info:nn {chemmacros} {default-formula-method}
+            \chemmacros_set_formula_method:V \g_chemmacros_formula_method_tl
+          }
+      }
+  }
+
+% --------------------------------------------------------------------------
+\tex_endinput:D
+
+2015/09/22 - new general option `method' which allows a choice between
+             `chemformula' and `mhchem'
+2015/10/13 - add missing compatibility definitions
+           - check for `mhchem' and `chemformula' and set method accordingly
+             if possible

@@ -43,7 +43,7 @@
 %% extension .ins) which are part of the distribution.
 %%% From File: ltmath.dtx
 \ProvidesFile{leqno.clo}
-        [2016/12/29 v1.2a Standard LaTeX option
+        [2015/03/31 v1.1i Standard LaTeX option
                                    (left equation numbers)]
 \renewcommand\@eqnnum{\hb@xt@.01\p@{}%
                       \rlap{\normalfont\normalcolor

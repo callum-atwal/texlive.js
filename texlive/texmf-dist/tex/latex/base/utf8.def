@@ -42,7 +42,7 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
 \ProvidesFile{utf8.def}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \makeatletter
 \catcode`\ \saved@space@catcode
 \def\UTFviii@two@octets#1#2{\expandafter
@@ -242,12 +242,14 @@
 \DeclareUnicodeCharacter{00AA}{\textordfeminine}
 \DeclareUnicodeCharacter{00AE}{\textregistered}
 \DeclareUnicodeCharacter{00BA}{\textordmasculine}
+
 \DeclareUnicodeCharacter{02C6}{\textasciicircum}
 \DeclareUnicodeCharacter{02DC}{\textasciitilde}
 \DeclareUnicodeCharacter{200C}{\textcompwordmark}
 \DeclareUnicodeCharacter{2026}{\textellipsis}
 \DeclareUnicodeCharacter{2122}{\texttrademark}
 \DeclareUnicodeCharacter{2423}{\textvisiblespace}
+
 \endinput
 %%
 %% End of file `utf8.def'.

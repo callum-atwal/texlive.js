@@ -42,7 +42,7 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
  \ProvidesFile{lcyenc.dfu}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \DeclareUnicodeCharacter{00A4}{\textcurrency}
 \DeclareUnicodeCharacter{00AB}{\guillemotleft}
 \DeclareUnicodeCharacter{00BB}{\guillemotright}
@@ -54,6 +54,7 @@
 \DeclareUnicodeCharacter{0131}{\i}
 \DeclareUnicodeCharacter{0152}{\OE}
 \DeclareUnicodeCharacter{0153}{\oe}
+
 \DeclareUnicodeCharacter{0400}{\@tabacckludge`\CYRE}
 \DeclareUnicodeCharacter{0401}{\CYRYO}
 \DeclareUnicodeCharacter{0403}{\@tabacckludge'\CYRG}
@@ -176,6 +177,7 @@
 \DeclareUnicodeCharacter{201D}{\textquotedblright}
 \DeclareUnicodeCharacter{201E}{\quotedblbase}
 \DeclareUnicodeCharacter{2116}{\textnumero}
+
 \endinput
 %%
 %% End of file `lcyenc.dfu'.

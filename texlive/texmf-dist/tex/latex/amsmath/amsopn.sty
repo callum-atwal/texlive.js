@@ -23,22 +23,14 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}% LaTeX 2.09 can't be used (nor non-LaTeX)
 [1994/12/01]% LaTeX date must December 1994 or later
-\ProvidesPackage{amsopn}[2016/03/08 v2.02 operator names]
+\ProvidesPackage{amsopn}[1999/12/14 v2.01 operator names]
 \def\nolimits@{\@ifnextchar\limits{\nolimits\@gobble}{\nolimits}}
 \begingroup \catcode`\"=12
-\ifx\Umathcode\@undefined
 \gdef\newmcodes@{\mathcode`\'39\mathcode`\*42\mathcode`\."613A%
   \ifnum\mathcode`\-=45 \else
     \mathchardef\std@minus\mathcode`\-\relax
   \fi
   \mathcode`\-45\mathcode`\/47\mathcode`\:"603A\relax}
-\else
-\gdef\newmcodes@{\mathcode`\'39\mathcode`\*42\mathcode`\."613A%
-  \ifnum\Umathcodenum`\-=45 \else
-    \Umathcharnumdef\std@minus\Umathcodenum`\-\relax
-  \fi
-  \mathcode`\-45\mathcode`\/47\mathcode`\:"603A\relax}
-\fi
 \endgroup
 \DeclareRobustCommand{\operatorname}{%
   \@ifstar{\qopname\newmcodes@ m}%

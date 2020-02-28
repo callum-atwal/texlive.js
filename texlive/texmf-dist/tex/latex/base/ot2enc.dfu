@@ -42,10 +42,11 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
  \ProvidesFile{ot2enc.dfu}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \DeclareUnicodeCharacter{00AB}{\guillemotleft}
 \DeclareUnicodeCharacter{00BB}{\guillemotright}
 \DeclareUnicodeCharacter{0131}{\i}
+
 \DeclareUnicodeCharacter{0400}{\@tabacckludge`\CYRE}
 \DeclareUnicodeCharacter{0401}{\CYRYO}
 \DeclareUnicodeCharacter{0402}{\CYRDJE}
@@ -181,6 +182,7 @@
 \DeclareUnicodeCharacter{201C}{\textquotedblleft}
 \DeclareUnicodeCharacter{201D}{\textquotedblright}
 \DeclareUnicodeCharacter{2116}{\textnumero}
+
 \endinput
 %%
 %% End of file `ot2enc.dfu'.

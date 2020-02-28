@@ -41,8 +41,23 @@
 %% The list of derived (unpacked) files belonging to the distribution
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
 \ProvidesFile{slides.def}
-              [2016/03/29 v2.4a
+              [2014/09/29 v2.3z
                SLiTeX definitions]
 \message{hacks,}
 
@@ -321,23 +336,18 @@ COLOR LAYER\\[.75in]%
 \put(#2,0){\hskip -\@halfwidth \vbox{\@whilenum \@tempcnta <\@dashcnt
 \relax\do{\vskip #1\unitlength\copy\@dashbox\advance\@tempcnta \@ne }%
 \vskip\@dashdim}}}\fi\@makepicbox(#2,#3)}
-\newif\if@ovvline \@ovvlinetrue
-\newif\if@ovhline \@ovhlinetrue
+
 \def\@oval(#1,#2)[#3]{\if@visible\begingroup \boxmaxdepth \maxdimen
   \@ovttrue \@ovbtrue \@ovltrue \@ovrtrue
-  \@ovvlinefalse \@ovhlinefalse
   \@tfor\reserved@a :=#3\do
-     {\csname @ov\reserved@a false\endcsname}%
-  \@ovxx#1\unitlength \@ovyy #2\unitlength
-  \@tempdimb \ifdim \@ovyy >\@ovxx \@ovxx \@ovvlinetrue
-  \else \@ovyy \ifdim \@ovyy =\@ovxx \else \@ovhlinetrue \fi\fi
+     {\csname @ov\reserved@a false\endcsname}\@ovxx
+  #1\unitlength \@ovyy #2\unitlength
+  \@tempdimb \ifdim \@ovyy >\@ovxx \@ovxx\else \@ovyy \fi
   \advance \@tempdimb -2\p@
   \@getcirc \@tempdimb
   \@ovro \ht\@tempboxa \@ovri \dp\@tempboxa
   \@ovdx\@ovxx \advance\@ovdx -\@tempdima \divide\@ovdx \tw@
   \@ovdy\@ovyy \advance\@ovdy -\@tempdima \divide\@ovdy \tw@
-  \ifdim \@ovdx >\z@ \@ovhlinetrue \fi
-  \ifdim \@ovdy >\z@ \@ovvlinetrue \fi
   \@circlefnt \setbox\@tempboxa
   \hbox{\if@ovr \@ovvert32\kern -\@tempdima \fi
   \if@ovl \kern \@ovxx \@ovvert01\kern -\@tempdima \kern -\@ovxx \fi

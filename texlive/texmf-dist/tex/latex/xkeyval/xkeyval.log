@@ -1,0 +1,43 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2020.2.24)  24 FEB 2020 18:14
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**/home/callum/Desktop/git/fyp/texlive.js/texlive/texmf-dist/tex/latex/xkeyval/
+xkeyval.sty
+
+(/home/callum/Desktop/git/fyp/texlive.js/texlive/texmf-dist/tex/latex/xkeyval/x
+keyval.sty
+LaTeX2e <2016/02/01>
+Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+
+LaTeX Warning: You have requested package `',
+               but the package provides `xkeyval'.
+
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/share/texl
+ive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks14
+\XKV@tempa@toks=\toks15
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex))
+\XKV@depth=\count79
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+)
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.47 \let\XKV@d
+               oxs\relax 
+Here is how much of TeX's memory you used:
+ 203 strings out of 493029
+ 3190 string characters out of 6136234
+ 53446 words of memory out of 5000000
+ 3827 multiletter control sequences out of 15000+600000
+ 3640 words of font info for 14 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 7i,0n,10p,235b,22s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+!  ==> Fatal error occurred, no output PDF file produced!

@@ -42,12 +42,13 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
  \ProvidesFile{t2benc.dfu}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \DeclareUnicodeCharacter{00A4}{\textcurrency}
 \DeclareUnicodeCharacter{00A7}{\textsection}
 \DeclareUnicodeCharacter{00AB}{\guillemotleft}
 \DeclareUnicodeCharacter{00BB}{\guillemotright}
 \DeclareUnicodeCharacter{0131}{\i}
+
 \DeclareUnicodeCharacter{0400}{\@tabacckludge`\CYRE}
 \DeclareUnicodeCharacter{0401}{\CYRYO}
 \DeclareUnicodeCharacter{0403}{\@tabacckludge'\CYRG}
@@ -223,6 +224,7 @@
 \DeclareUnicodeCharacter{2329}{\textlangle}
 \DeclareUnicodeCharacter{232A}{\textrangle}
 \DeclareUnicodeCharacter{2423}{\textvisiblespace}
+
 \endinput
 %%
 %% End of file `t2benc.dfu'.

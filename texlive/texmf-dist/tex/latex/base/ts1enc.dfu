@@ -42,7 +42,7 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
  \ProvidesFile{ts1enc.dfu}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \DeclareUnicodeCharacter{00A2}{\textcent}
 \DeclareUnicodeCharacter{00A3}{\textsterling}
 \DeclareUnicodeCharacter{00A4}{\textcurrency}
@@ -71,6 +71,7 @@
 \DeclareUnicodeCharacter{00D7}{\texttimes}
 \DeclareUnicodeCharacter{00F7}{\textdiv}
 \DeclareUnicodeCharacter{0192}{\textflorin}
+
 \DeclareUnicodeCharacter{02C7}{\textasciicaron}
 \DeclareUnicodeCharacter{02D8}{\textasciibreve}
 \DeclareUnicodeCharacter{02DD}{\textacutedbl}
@@ -112,6 +113,7 @@
 \DeclareUnicodeCharacter{25E6}{\textopenbullet}
 \DeclareUnicodeCharacter{25EF}{\textbigcircle}
 \DeclareUnicodeCharacter{266A}{\textmusicalnote}
+
 \endinput
 %%
 %% End of file `ts1enc.dfu'.

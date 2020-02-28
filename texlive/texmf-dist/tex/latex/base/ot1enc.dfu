@@ -42,7 +42,7 @@
 %% and covered by LPPL is defined by the unpacking scripts (with
 %% extension .ins) which are part of the distribution.
  \ProvidesFile{ot1enc.dfu}
-   [2017/01/28 v1.1t UTF-8 support for inputenc]
+   [2015/12/03 v1.1r UTF-8 support for inputenc]
 \DeclareUnicodeCharacter{00A0}{\nobreakspace}
 \DeclareUnicodeCharacter{00A1}{\textexclamdown}
 \DeclareUnicodeCharacter{00A3}{\textsterling}
@@ -68,6 +68,7 @@
 \DeclareUnicodeCharacter{0175}{\^w}
 \DeclareUnicodeCharacter{0176}{\^Y}
 \DeclareUnicodeCharacter{0177}{\^y}
+
 \DeclareUnicodeCharacter{0218}{\textcommabelow S}
 \DeclareUnicodeCharacter{0219}{\textcommabelow s}
 \DeclareUnicodeCharacter{021A}{\textcommabelow T}
@@ -78,6 +79,7 @@
 \DeclareUnicodeCharacter{2019}{\textquoteright}
 \DeclareUnicodeCharacter{201C}{\textquotedblleft}
 \DeclareUnicodeCharacter{201D}{\textquotedblright}
+
 \endinput
 %%
 %% End of file `ot1enc.dfu'.

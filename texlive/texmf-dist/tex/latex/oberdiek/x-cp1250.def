@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: inputenx
-%% Version: 2016/05/16 v1.11
+%% Version: 2011/05/27 v1.10
 %% 
 %% Copyright (C) 2006-2011 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -45,7 +45,7 @@
 %%    inputenx-licrcmds.txt, inputenx-utf8enc.txt.
 %% 
 \ProvidesFile{x-cp1250.def}%
-  [2016/05/16 v1.11 Input encoding cp1250 (inputenx)]%
+  [2011/05/27 v1.10 Input encoding cp1250 (inputenx)]%
 \edef\RestoreAtCatcode{\catcode64=\the\catcode64\relax}
 \makeatletter
 \ProvideTextCommandDefault{\textacutedbl}{%

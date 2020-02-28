@@ -43,7 +43,7 @@
 %% extension .ins) which are part of the distribution.
 %%% From File: ltoutenc.dtx
 \ProvidesFile{ot4enc.def}
- [2017/02/22 v2.0g
+ [2005/09/27 v1.99g
          Standard LaTeX file]
 \DeclareFontEncoding{OT4}{}{}
 \DeclareFontSubstitution{OT4}{cmr}{m}{n}

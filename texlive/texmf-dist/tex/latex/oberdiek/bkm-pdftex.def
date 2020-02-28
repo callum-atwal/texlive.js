@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: bookmark
-%% Version: 2016/05/17 v1.26
+%% Version: 2011/12/02 v1.24
 %% 
 %% Copyright (C) 2007-2011 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -37,7 +37,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{bkm-pdftex.def}%
-  [2016/05/17 v1.26 bookmark driver for pdfTeX (HO)]%
+  [2011/12/02 v1.24 bookmark driver for pdfTeX (HO)]%
 \def\BKM@DO@entry#1#2{%
   \begingroup
     \kvsetkeys{BKM@DO}{#1}%

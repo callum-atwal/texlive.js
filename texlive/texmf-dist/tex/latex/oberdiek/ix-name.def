@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: inputenx
-%% Version: 2016/05/16 v1.11
+%% Version: 2011/05/27 v1.10
 %% 
 %% Copyright (C) 2006-2011 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -45,7 +45,7 @@
 %%    inputenx-licrcmds.txt, inputenx-utf8enc.txt.
 %% 
 \ProvidesFile{ix-name.def}%
-  [2016/05/16 v1.11 Name list (inputenx)]%
+  [2011/05/27 v1.10 Name list (inputenx)]%
 \InputenxName{AE}{00C6}% LATIN CAPITAL LETTER AE
 \InputenxName{Aacute}{00C1}% LATIN CAPITAL LETTER A WITH ACUTE
 \InputenxName{Abreve}{0102}% LATIN CAPITAL LETTER A WITH BREVE

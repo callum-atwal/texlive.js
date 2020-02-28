@@ -9,8 +9,6 @@
 %% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
 %% with portions written by David Carlisle and Heiko Oberdiek,
 %% 2001-2012 Heiko Oberdiek.
-%% 2016-2017 Oberdiek Package Suport Group
-%%      https://github.com/ho-tex/hyperref/issues
 %%
 %% This file is part of the `Hyperref Bundle'.
 %% -------------------------------------------
@@ -32,7 +30,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{hyperref}
-  [2017/03/14 v6.85a %
+  [2012/11/06 v6.83m %
   Hypertext links for LaTeX]
 \begingroup
   \@makeother\`%
@@ -2956,7 +2954,6 @@
 \DeclareVoidOption{pdftex}{%
   \ifpdf
     \def\Hy@driver{hpdftex}%
-    \PassOptionsToPackage{pdftex}{color}%
   \else
     \Hy@Error{%
       Wrong driver option `pdftex',\MessageBreak
@@ -2964,26 +2961,9 @@
     }\@ehc
   \fi
 }
-\DeclareVoidOption{luatex}{%
-  \ifpdf
-    \ifx\pdfextension\@undefined
-      \def\Hy@driver{hpdftex}%
-      \PassOptionsToPackage{pdftex}{color}%
-    \else
-      \def\Hy@driver{hluatex}%
-      \PassOptionsToPackage{luatex}{color}%
-    \fi
-  \else
-    \Hy@Error{%
-      Wrong driver option `luatex',\MessageBreak
-      because luaTeX in PDF mode is not detected%
-    }\@ehc
-  \fi
-}
 \DeclareVoidOption{nativepdf}{%
   \HyOpt@CheckDvi{nativepdf}{%
     \def\Hy@driver{hdvips}%
-    \PassOptionsToPackage{dvips}{color}%
   }%
 }
 \DeclareVoidOption{dvipdfm}{%
@@ -2994,7 +2974,6 @@
 \DeclareVoidOption{dvipdfmx}{%
   \HyOpt@CheckDvi{dvipdfmx}{%
     \def\Hy@driver{hdvipdfm}%
-    \PassOptionsToPackage{dvipdfmx}{color}%
   }%
 }
 \define@key{Hyp}{dvipdfmx-outline-open}[true]{%
@@ -3023,7 +3002,6 @@
 \DeclareVoidOption{dvips}{%
   \HyOpt@CheckDvi{dvips}{%
     \def\Hy@driver{hdvips}%
-    \PassOptionsToPackage{dvips}{color}%
   }%
 }
 \DeclareVoidOption{hypertex}{%
@@ -3088,7 +3066,6 @@
 \DeclareVoidOption{dvipsone}{%
   \HyOpt@CheckDvi{dvipsone}{%
     \def\Hy@driver{hdvipson}%
-    \PassOptionsToPackage{dvipsone}{color}%
   }%
 }
 \DeclareVoidOption{textures}{%
@@ -3104,7 +3081,6 @@
 \DeclareVoidOption{ps2pdf}{%
   \HyOpt@CheckDvi{ps2pdf}{%
     \def\Hy@driver{hdvips}%
-    \PassOptionsToPackage{dvips}{color}%
   }%
 }
 \let\HyOpt@DriverFallback\ltx@empty
@@ -3362,24 +3338,6 @@
   \def\theoremautorefname{Teorema}%
   \def\pageautorefname{P\'agina}%
 }
-\def\HyLang@catalan{%
-\def\equationautorefname{Equaci\'o}%
-\def\footnoteautorefname{Nota al peu de p\`agina}%
-\def\itemautorefname{Element}%
-\def\figureautorefname{Figura}%
-\def\tableautorefname{Taula}%
-\def\partautorefname{Part}%
-\def\appendixautorefname{Ap\`endix}%
-\def\chapterautorefname{Cap\'itol}%
-\def\sectionautorefname{Secci\'o}%
-\def\subsectionautorefname{Subsecci\'o}%
-\def\subsubsectionautorefname{Subsubsecci\'o}%
-\def\paragraphautorefname{Par\`agraf}%
-\def\subparagraphautorefname{Subpar\`agraf}%
-\def\FancyVerbLineautorefname{L\'inia}%
-\def\theoremautorefname{Teorema}%
-\def\pageautorefname{P\`agina}%
-}
 \def\HyLang@vietnamese{%
   \def\equationautorefname{Ph\uhorn{}\ohorn{}ng tr\`inh}%
   \def\footnoteautorefname{Ch\'u th\'ich}%
@@ -3455,7 +3413,6 @@
 \HyLang@DeclareLang{brazilian}{portuges}{}
 \HyLang@DeclareLang{portuguese}{portuges}{}
 \HyLang@DeclareLang{spanish}{spanish}{}
-\HyLang@DeclareLang{catalan}{catalan}{}
 \HyLang@DeclareLang{afrikaans}{afrikaans}{}
 \HyLang@DeclareLang{french}{french}{}
 \HyLang@DeclareLang{frenchb}{french}{}
@@ -4078,26 +4035,14 @@
     \hypercalcbpdef\@pdfremotestartview{#1}%
     \edef\@pdfremotestartview{\@pdfremotestartview}%
     \Hy@Match\@pdfremotestartview{}{%
-      ^(XYZ(%
-            ()| %
-            (null|-?\HyPat@NonNegativeReal/) %
-            (null|-?\HyPat@NonNegativeReal/) %
-            (null|\HyPat@NonNegativeReal/)%
-          )|% end of "XYZ"
-        Fit(%
-            ()|%
-            B|%
-            (H|V|BH|BV)(%
-                ()| %
-                (null|\HyPat@NonNegativeReal/)%
-              )|%
-            R %
-                \HyPat@NonNegativeReal/ %
-                \HyPat@NonNegativeReal/ %
-                \HyPat@NonNegativeReal/ %
-                \HyPat@NonNegativeReal/%
-          )% end of "Fit"
-      )$%
+      ^(XYZ -?(null|\HyPat@NonNegativeReal/) %
+            -?(null|\HyPat@NonNegativeReal/) %
+            (null|\HyPat@NonNegativeReal/)|%
+        Fit(|B|%
+         (H|V|BH|BV) (null|\HyPat@NonNegativeReal/)|%
+         R \HyPat@NonNegativeReal/ \HyPat@NonNegativeReal/ %
+           \HyPat@NonNegativeReal/ \HyPat@NonNegativeReal/%
+      ))$%
     }{}{%
       \Hy@Warning{%
          Invalid value `\@pdfremotestartview'\MessageBreak
@@ -4557,11 +4502,7 @@
   }{}%
   \ifx\Hy@driver\@empty
   \else
-     \ifx\pdfextension\@undefined
-       \def\Hy@temp{hpdftex}%
-     \else
-       \def\Hy@temp{hluatex}%
-     \fi
+    \def\Hy@temp{hpdftex}%
     \ifpdf
       \ifx\Hy@driver\Hy@temp
       \else
@@ -4631,11 +4572,7 @@
       \def\HyOpt@DriverType{ (autodetected)}%
       \providecommand*{\Hy@defaultdriver}{hypertex}%
       \ifpdf
-        \ifx\pdfextension\@undefined
-          \def\Hy@driver{hpdftex}%
-        \else
-          \def\Hy@driver{hluatex}%
-        \fi
+        \def\Hy@driver{hpdftex}%
       \else
         \ifxetex
           \def\Hy@driver{hxetex}%
@@ -6154,7 +6091,7 @@
   \def\Fld@align{#1}%
 }
 \define@key{Field}{value}{%
-  \Hy@pdfstringdef\Fld@value{#1}%
+  \def\Fld@value{#1}%
 }
 \define@key{Field}{checkboxsymbol}{%
   \Fld@DingDef\Fld@cbsymbol{#1}%
@@ -7319,11 +7256,6 @@
     \ignorespaces
   }%
 \fi
-\Hy@AtBeginDocument{%
-\@ifpackageloaded{cleveref}{%
-\let\Hy@savedthm\@thm
-\def\@thm{\ifhmode\unskip\fi\Hy@savedthm}%
-}{%
 \@ifpackageloaded{amsthm}{%
   \def\Hy@temp#1#2#3{%
     \ifhmode\unskip\unskip\par\fi
@@ -7444,13 +7376,7 @@
       \clubpenalty\@clubpenalty \everypar{}%
     \fi
   }%
-}%
-{%
-\let\Hy@savedthm\@thm
-\def\@thm{\ifhmode\unskip\fi\Hy@savedthm}%
-}%
-}%
-}
+}{}
 \ifHy@hyperfootnotes
   \newcounter{Hfootnote}%
   \let\H@@footnotetext\@footnotetext

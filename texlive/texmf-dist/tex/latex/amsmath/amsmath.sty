@@ -23,7 +23,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}% LaTeX 2.09 can't be used (nor non-LaTeX)
 [1994/12/01]% LaTeX date must be December 1994 or later
-\ProvidesPackage{amsmath}[2016/11/05 v2.16a AMS math features]
+\ProvidesPackage{amsmath}[2016/03/03 v2.15a AMS math features]
 \edef\@temp{\catcode 96=\number\catcode 96 }
 \catcode\string `\`=12
 \def\do#1{\catcode\number`#1=\number\catcode`#1}
@@ -71,22 +71,8 @@
         \fi
     }%
 }
-\DeclareOption{alignedleftspaceyes}{\def\alignedspace@left{\null\,}}
-\DeclareOption{alignedleftspaceno}{\def\alignedspace@left{\null}}
-\DeclareOption{alignedleftspaceyesifneg}{%
-\def\alignedspace@left{%
-  \edef\@tempa{\expandafter\@car\the\lastskip\@nil}%
-  \if-\@tempa\null\,%
-  \else
-    \edef\@tempa{\expandafter\@car\the\lastkern\@nil}%
-    \if-\@tempa\null\,%
-    \else\null
-    \fi
-  \fi}%
-}
 \DeclareOption{?}{}
-\ExecuteOptions{%
-  nointlimits,sumlimits,namelimits,centertags,alignedleftspaceyesifneg}
+\ExecuteOptions{nointlimits,sumlimits,namelimits,centertags}
 \ProcessOptions\par
 \@ifpackagewith{amsmath}{?}{%
   \typeout{^^J%
@@ -216,76 +202,12 @@ Foreign command \@backslashchar#1;\MessageBreak
 \DeclareRobustCommand{\binom}{\genfrac()\z@{}}
 \newcommand{\dbinom}{\genfrac(){0pt}0}
 \newcommand{\tbinom}{\genfrac(){0pt}1}
-\ifx\directlua\@undefined
-\ifx\XeTeXcharclass\@undefined
 \DeclareRobustCommand{\genfrac}[4]{%
   \def\@tempa{#1#2}%
   \edef\@tempb{\@nx\@genfrac\@mathstyle{#4}%
     \csname @@\ifx @#3@over\else above\fi
     \ifx\@tempa\@empty \else withdelims\fi\endcsname}
   \@tempb{#1#2#3}}
-\else
-\def\genfrac@rule#1#2#3#4{%
-\hbox{$\left#1\vcenter{\hrule \@width\z@
-                       \@height
-                       \ifdim\fontdimen#2#3\tw@=\z@
-                       #4\fontdimen6#3\tw@
-                       \else
-                       \fontdimen#2#3\tw@
-                       \fi
-                      }\right.$}}
-\def\genfrac@choice#1#2{%
-\ifx @#2@\else
-{\delimitershortfall\z@\delimiterfactor\@m
- \mathsurround\z@\nulldelimiterspace\z@
-\ifx c#1\kern-\nulldelimiterspace\fi
-\mathchoice
-{\genfrac@rule{#2}{20}\textfont{2.39}}%
-{\genfrac@rule{#2}{21}\textfont{1}}%
-{\genfrac@rule{#2}{21}\scriptfont{1.45}}%
-{\genfrac@rule{#2}{21}\scriptscriptfont{1.35}}%
-}%
-\ifx o#1\kern-\nulldelimiterspace\fi
-\fi
-}
-\DeclareRobustCommand{\genfrac}[6]{{%
-\@mathstyle{#4}%
-\genfrac@choice o{#1}%
-{\begingroup#5\endgroup\ifx @#3@\@@over\else\@@above\fi#3\relax#6}%
-\genfrac@choice c{#2}%
-}}
-\fi
-\else
-\def\genfrac@rule#1#2#3{%
-\hbox{$\left#1\vcenter{\hrule \@width\z@
-                       \@height
-                       \ifdim\Umathfractiondelsize#2=\z@
-                       #3\fontdimen6#3\tw@
-                       \else
-                       \Umathfractiondelsize#2%
-                       \fi
-                      }\right.$}}
-\def\genfrac@choice#1#2{%
-\ifx @#2@\else
-{\delimitershortfall\z@\delimiterfactor\@m
- \mathsurround\z@\nulldelimiterspace\z@
-\ifx c#1\kern-\nulldelimiterspace\fi
-\mathchoice
-{\genfrac@rule{#2}\displaystyle{2.39}}%
-{\genfrac@rule{#2}\textstyle{1}}%
-{\genfrac@rule{#2}\scriptstyle{1.45}}%
-{\genfrac@rule{#2}\scriptscriptstyle{1.35}}%
-}%
-\ifx o#1\kern-\nulldelimiterspace\fi
-\fi
-}
-\DeclareRobustCommand{\genfrac}[6]{{%
-\@mathstyle{#4}%
-\genfrac@choice o{#1}%
-{\begingroup#5\endgroup\ifx @#3@\@@over\else\@@above\fi#3\relax#6}%
-\genfrac@choice c{#2}%
-}}
-\fi
 \def\@genfrac#1#2#3#4#5{{#1{\begingroup#4\endgroup#2#3\relax#5}}}
 \def\@mathstyle#1{%
   \ifx\@empty#1\@empty\relax
@@ -496,7 +418,7 @@ Foreign command \@backslashchar#1;\MessageBreak
        \ifgtest@ % if \keybin@ test
          \gdef\thedots@{\dotsb@}%
        \else
-         \xdef\meaning@{\meaning\@let@token. .........}%
+         \xdef\meaning@{\meaning\@let@token..........}%
          \xdef\meaning@@{\@xp\striplong@\meaning@\relax\meaning@}%
          \@xp\math@\meaning@\math@
          \ifgtest@ % if \mathxxx test
@@ -664,16 +586,12 @@ Foreign command \@backslashchar#1;\MessageBreak
 \def\Mathstrut@{\copy\Mathstrutbox@}
 \ifx\Umathcharnumdef\@undefined
 \def\resetMathstrut@{%
-  \begingroup
   \setbox\z@\hbox{%
     \mathchardef\@tempa\mathcode`\(\relax
     \def\@tempb##1"##2##3{\the\textfont"##3\char"}%
     \expandafter\@tempb\meaning\@tempa \relax
   }%
- \edef\@tempa{%
-     \ht\Mathstrutbox@\the\ht\z@\relax
-     \dp\Mathstrutbox@\the\dp\z@\relax}%
-  \expandafter\endgroup\@tempa
+  \ht\Mathstrutbox@\ht\z@ \dp\Mathstrutbox@\dp\z@
 }
 \else
 \def\resetMathstrut@{%
@@ -1099,7 +1017,7 @@ ill-advised in LaTeX.%
         \ifdim\linewidth=\columnwidth
         \else \parshape\@ne \@totalleftmargin \linewidth
         \fi
-        \noindent\ignorespaces##1\par}%
+        \noindent##1\par}%
       \penalty\predisplaypenalty\vskip\abovedisplayskip%
     }%
 }}
@@ -1342,7 +1260,7 @@ and fix things up.}
         \nonmatherr@{\begin{\@currenvir}}%
     \fi
     \savecolumn@ % Assumption: called inside a group
-    \alignedspace@left
+    \null\,%
     \if #1t\vtop \else \if#1b \vbox \else \vcenter \fi \fi \bgroup
         \maxfields@#2\relax
         \ifnum\maxfields@>\m@ne
@@ -1406,7 +1324,7 @@ and fix things up.}
     \RIfM@\else
         \nonmatherr@{\begin{gathered}}%
     \fi
-    \alignedspace@left
+    \null\,%
     \if #1t\vtop \else \if#1b\vbox \else \vcenter \fi\fi \bgroup
         \Let@ \chardef\dspbrk@context\@ne \restore@math@cr
         \spread@equation

@@ -34,13 +34,13 @@
 %% The list of all files belonging to the LaTeX `Tools Bundle' is
 %% given in the file `manifest.txt'.
 %% 
-%% Copyright 1996 1997 1998 1999 2002 2003 2004 2016 2017
-%% David Carlisle Frank Mittelbach
+%% Copyright 1996 1997 1998 1999 2002 2003 2004 David Carlisle Frank Mittelbach
 %%
 %% Development of this package was commissioned by Y&Y Inc.
+%% http://www.yandy.com
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{bm}
-          [2017/01/16 v1.2c Bold Symbol Support (DPC/FMi)]
+          [2014/10/28 v1.1c Bold Symbol Support (DPC/FMi)]
 \def\bm#1#2{%
   \let\bm@pmb\install@mathalphabet
   \let\bm@pmb@\getanddefine@fonts
@@ -268,7 +268,7 @@
     \let\bm@next\bm@add
   \else\ifcat\noexpand#1\relax
     \xdef\meaning@{\meaning#1}%
-    \expandafter\bm@mchar@test\meaning@""""\@nil#1%
+    \expandafter\bm@mchar@test\meaning@""\@nil#1%
   \else\ifcat.\ifcat a#1.\else#1\fi
     \count@\mathcode`#1\relax
     \ifnum\count@=\mathcode`\'%
@@ -279,13 +279,7 @@
         \count@\delcode`#1\relax
         \bm@delimiter
       \else
-        \ifnum\count@>"8000
-          \Umathcharnumdef\@tempa\count@
-          \xdef\meaning@{\meaning\@tempa}%
-          \expandafter\bm@mchar@test\meaning@""""\@nil\@tempa
-        \else
-          \bm@mathchar
-        \fi
+        \bm@mathchar
       \fi
     \fi
   \else
@@ -339,20 +333,6 @@
       \noexpand\@tempa{\mathchar\the\count@\space}}%
     \@tempb
   \fi}
-\def\bm@umathchar#1#2#3{%
-\@tempcnta#2\relax
-\count@\bm@table
-\ifnum\count@=\z@
-  \bm@gr@up\boldmath{\Umathchar#1 #2 #3 }%
-\else
-  \ifnum\count@=\m@ne
-  \else
-    \advance\@tempcnta\count@
-  \fi
-  \bm@xadd{\Umathchar#1\space
-                     \the\@tempcnta\space\space
-                     #3\space}%
-\fi}
 \def\bm@pmb#1{%
   \bm@add{\bm@pmb@{#1}}}
 \def\bm@pmb@#1{{%
@@ -410,23 +390,18 @@
  \bm@changefam{000}%
  \bm@xadd{\radical\the\count@\space}}%
 \edef\bm@mchar@{\meaning\mathchar}
-\edef\bm@umchar@{\string\U\expandafter\@gobble\meaning\mathchar}
-\def\bm@mchar@test#1"#2"#3"#4"#5\@nil#6{%
+\def\bm@mchar@test#1"#2"#3\@nil#4{%
   \xdef\meaning@{#1}%
   \ifx\meaning@\bm@mchar@
     \count@"#2\relax
     \bm@mathchar
   \else
-    \ifx\meaning@\bm@umchar@
-       \bm@umathchar{"#2}{"#3}{"#4}%
-    \else
-      \ifx\bm@previous\@empty
-        \ifx\relax#6%
-          \gdef\bm@first{#6}%
-        \fi
+    \ifx\bm@previous\@empty
+      \ifx\relax#4%
+        \gdef\bm@first{#4}%
       \fi
-      \bm@add{#6}%
     \fi
+    \bm@add{#4}%
   \fi}
 \def\bm@changefam#1{%
   \@tempcnta\count@

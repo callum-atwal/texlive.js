@@ -37,28 +37,30 @@
 %% 
 %%% From File: fontdef.dtx
 \ProvidesFile{fonttext.ltx}
-           [2016/12/03 v3.0a LaTeX Kernel
+           [2014/09/29 v2.3a LaTeX Kernel
 (Text
            font setup)]
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
 \typeout{=== Don't modify this file, use a .cfg file instead ===^^J}
 \input {omlenc.def}
 \input  {t1enc.def}
 \input {ot1enc.def}       % <- should come after T1 for speed
 \input {omsenc.def}
-\ifx\Umathchar\@undefined
 \fontencoding{OT1}
-\else
-\input {tuenc.def}
-\fontencoding{TU}
-\DeclareFontSubstitution{TU}{lmr}{m}{n}
-\begingroup
-\nfss@catcodes
-\input  {tulmr.fd}
-\input  {tulmss.fd}
-\input  {tulmtt.fd}
-\endgroup
-\DeclareFontSubstitution{TU}{lmr}{m}{n}
-\fi
 \DeclareFontEncodingDefaults{}{}
 \DeclareFontSubstitution{T1}{cmr}{m}{n}
 \DeclareFontSubstitution{OT1}{cmr}{m}{n}
@@ -73,23 +75,16 @@
 \input {ot1cmtt.fd}
 \endgroup
 \DeclareErrorFont{OT1}{cmr}{m}{n}{10}
-\ifx\Umathchar\@undefined
-\newcommand\encodingdefault{OT1}
 \newcommand\rmdefault{cmr}
 \newcommand\sfdefault{cmss}
 \newcommand\ttdefault{cmtt}
-\else
-\newcommand\encodingdefault{TU}
-\newcommand\rmdefault{lmr}\fontfamily{\rmdefault}
-\newcommand\sfdefault{lmss}
-\newcommand\ttdefault{lmtt}
-\fi
 \newcommand\bfdefault{bx}
 \newcommand\mddefault{m}
 \newcommand\itdefault{it}
 \newcommand\sldefault{sl}
 \newcommand\scdefault{sc}
 \newcommand\updefault{n}
+\newcommand\encodingdefault{OT1}
 \newcommand\familydefault{\rmdefault}
 \newcommand\seriesdefault{\mddefault}
 \newcommand\shapedefault{\updefault}

@@ -43,7 +43,7 @@
 %% extension .ins) which are part of the distribution.
 %%% From File: ltoutenc.dtx
 \ProvidesFile{t1enc.def}
- [2017/02/22 v2.0g
+ [2005/09/27 v1.99g
          Standard LaTeX file]
 \DeclareFontEncoding{T1}{}{}
 \DeclareTextAccent{\`}{T1}{0}
@@ -240,11 +240,8 @@
 \DeclareTextComposite{\'}{T1}{y}{253}
 \DeclareTextCompositeCommand{\k}{T1}{o}{\textogonekcentered{o}}
 \DeclareTextCompositeCommand{\k}{T1}{O}{\textogonekcentered{O}}
-\ifx\textcommaabove\@undefined\else
-\DeclareTextCompositeCommand{\c}{T1}{g}{\textcommaabove{g}}
-\fi
-\ifx\textcommabelow\@undefined\else
 \DeclareTextCompositeCommand{\c}{T1}{G}{\textcommabelow{G}}
+\DeclareTextCompositeCommand{\c}{T1}{g}{\textcommaabove{g}}
 \DeclareTextCompositeCommand{\c}{T1}{K}{\textcommabelow{K}}
 \DeclareTextCompositeCommand{\c}{T1}{k}{\textcommabelow{k}}
 \DeclareTextCompositeCommand{\c}{T1}{L}{\textcommabelow{L}}
@@ -253,7 +250,6 @@
 \DeclareTextCompositeCommand{\c}{T1}{n}{\textcommabelow{n}}
 \DeclareTextCompositeCommand{\c}{T1}{R}{\textcommabelow{R}}
 \DeclareTextCompositeCommand{\c}{T1}{r}{\textcommabelow{r}}
-\fi
 \endinput
 %%
 %% End of file `t1enc.def'.

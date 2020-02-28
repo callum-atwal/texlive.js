@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: hypdoc
-%% Version: 2016/10/02 v1.13
+%% Version: 2011/08/19 v1.11
 %% 
 %% Copyright (C) 2002, 2006, 2007, 2009-2011 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -34,7 +34,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{hypdoc}%
-  [2016/10/02 v1.13 Hyper extensions for doc.sty (HO)]%
+  [2011/08/19 v1.11 Hyper extensions for doc.sty (HO)]%
 \newif\ifHD@numbered
 \DeclareOption{numbered}{\HD@numberedtrue}
 \ProcessOptions*\relax
@@ -149,7 +149,7 @@
   \else
     \stepcounter{HD@unique}%
     \pdfbookmark[\HD@guesstoclevel{\HDorg@listoffigures}]%
-        {\listfigurename}{toc\theHD@unique}%
+        {\contentsname}{toc\theHD@unique}%
   \fi
   \begingroup
     \HD@sectionpatch
@@ -162,7 +162,7 @@
   \else
     \stepcounter{HD@unique}%
     \pdfbookmark[\HD@guesstoclevel{\HDorg@listoftables}]%
-        {\listtablename}{toc\theHD@unique}%
+        {\contentsname}{toc\theHD@unique}%
   \fi
   \begingroup
     \HD@sectionpatch
@@ -244,7 +244,7 @@
         \let\Hy@writebookmark\HDorg@writebookmark
         \stepcounter{HD@unique}%
         \pdfbookmark[\HD@guesstoclevel{\HDorg@glossary@prologue}]%
-            {\changehistoryname}{glossary\theHD@unique}%
+            {\glossaryname}{glossary\theHD@unique}%
       \endgroup
     \fi
     \HDorg@glossary@prologue
@@ -252,7 +252,6 @@
   \HDorg@theglossary
 }
 \providecommand*{\glossaryname}{Change History}
-\providecommand*{\changehistoryname}{\glossaryname}
 \newcounter{HD@hypercount}
 \newlength{\HD@helplength}
 \newif\ifHD@savedest

@@ -9,7 +9,7 @@
 %% This is a generated file.
 %% 
 %% Project: epstopdf
-%% Version: 2016/05/15 v2.6
+%% Version: 2010/02/09 v2.5
 %% 
 %% Copyright (C) 2001, 2006-2010 by
 %%    Heiko Oberdiek <heiko.oberdiek at googlemail.com>
@@ -99,7 +99,7 @@
   \fi
 \expandafter\x\csname ver@epstopdf-base.sty\endcsname
 \ProvidesPackage{epstopdf-base}%
-  [2016/05/15 v2.6 Base part for package epstopdf]%
+  [2010/02/09 v2.5 Base part for package epstopdf]%
 \begingroup\catcode61\catcode48\catcode32=10\relax%
   \catcode13=5 % ^^M
   \endlinechar=13 %
@@ -157,19 +157,15 @@
   \expandafter\ETE@AtEnd
 \fi%
 \begingroup
-  \def\x{luatex.def}%
-  \ifx\Gin@driver\x
-  \else
   \def\x{pdftex.def}%
   \ifx\Gin@driver\x
   \else
     \@PackageWarningNoLine{epstopdf}{%
-      Drivers other than `pdftex' and `luatex' are not supported%
+      Drivers other than `pdftex.def' are not supported%
     }%
     \endgroup
     \newcommand*{\epstopdfsetup}[1]{}%
     \expandafter\ETE@AtEnd
-  \fi%
   \fi%
 \endgroup
 \begingroup

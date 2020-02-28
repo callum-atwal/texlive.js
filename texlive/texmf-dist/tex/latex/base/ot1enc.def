@@ -43,7 +43,7 @@
 %% extension .ins) which are part of the distribution.
 %%% From File: ltoutenc.dtx
 \ProvidesFile{ot1enc.def}
- [2017/02/22 v2.0g
+ [2005/09/27 v1.99g
          Standard LaTeX file]
 \DeclareFontEncoding{OT1}{}{}
 \DeclareTextAccent{\"}{OT1}{127}
@@ -114,9 +114,7 @@
 \DeclareTextCompositeCommand{\'}{OT1}{i}{\@tabacckludge'\i}
 \DeclareTextCompositeCommand{\^}{OT1}{i}{\^\i}
 \DeclareTextCompositeCommand{\"}{OT1}{i}{\"\i}
-\ifx\textcommaabove\@undefined\else
-\DeclareTextCompositeCommand{\c}{OT1}{g}{\textcommaabove{g}}
-\fi
+\DeclareTextCompositeCommand{\c}{T1}{g}{\textcommaabove{g}}
 \endinput
 %%
 %% End of file `ot1enc.def'.

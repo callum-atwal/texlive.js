@@ -9,8 +9,6 @@
 %% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
 %% with portions written by David Carlisle and Heiko Oberdiek,
 %% 2001-2012 Heiko Oberdiek.
-%% 2016-2017 Oberdiek Package Suport Group
-%%      https://github.com/ho-tex/hyperref/issues
 %%
 %% This file is part of the `Hyperref Bundle'.
 %% -------------------------------------------
@@ -31,7 +29,7 @@
 %% given in the file `manifest.txt'.
 %%
 \ProvidesFile{hxetex.def}
-  [2017/03/14 v6.85a %
+  [2012/11/06 v6.83m %
   Hyperref driver for XeTeX]
 \Hy@VersionCheck{hxetex.def}
 \HyPsd@LoadUnicode
@@ -392,8 +390,8 @@
   \Hy@DisableOption{ocgcolorlinks}%
 \fi
 \def\Hy@BeginAnnot#1{%
-  \global\advance\c@Hy@AnnotLevel\@ne
-  \ifnum\c@Hy@AnnotLevel=\@ne
+  \stepcounter{Hy@AnnotLevel}%
+  \ifnum\value{Hy@AnnotLevel}=\@ne
     #1%
   \fi
 }
@@ -402,7 +400,7 @@
     \Hy@endcolorlink
     \@pdfm@mark{eann}%
   \fi
-  \global\advance\c@Hy@AnnotLevel\m@ne
+  \addtocounter{Hy@AnnotLevel}\m@ne
 }
 \def\Hy@undefinedname{UNDEFINED}
 \def\hyper@linkstart#1#2{%
@@ -1227,7 +1225,6 @@
   \Fld@flags
   /Q \Fld@align
   /BS<</W \Fld@borderwidth /S/\Fld@borderstyle>>%
-  /AP<< /N <</Yes<<>>>> >>  %new string /Yes is from below
   /MK<<%
     \ifnum\Fld@rotation=\z@
     \else
@@ -1339,12 +1336,12 @@
   >>%
   /DA(/ZaDb \strip@pt\Fld@charsize\space Tf%
       \ifx\Fld@color\@empty\else\space\Fld@color\fi)%
-  \ifx\Fld@default\@empty
+  \ifx\@currValue\Fld@default
+    /V/\Fld@default
+    /DV/\Fld@default
+  \else
     /V/Off%
     /DV/Off%
-  \else
-   /V/\Fld@default
-   /DV/\Fld@default
   \fi
   \Fld@additionalactions
 }

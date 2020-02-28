@@ -43,7 +43,7 @@
 %% extension .ins) which are part of the distribution.
 %%% From File: ltoutenc.dtx
 \ProvidesFile{omsenc.def}
- [2017/02/22 v2.0g
+ [2005/09/27 v1.99g
          Standard LaTeX file]
 \DeclareFontEncoding{OMS}{}{}
 \DeclareTextSymbol{\textasteriskcentered}{OMS}{3}   % "03
