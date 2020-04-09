@@ -33,7 +33,7 @@ var TeXLive = function (opt_workerPath) {
     } 
 
     // set content
-    var html = '<h3>There was an error compiling your document!</h3>'+ errors +'\n<p>Please see the output log below for more information</p>\n<textarea style="width:100%;height:300px" readonly>';
+    var html = '<h3>There was an error compiling your document!</h3>'+ errors +'\n<p>Please see the output log below for more information</p>\n<textarea style="width:100%;height:300px;border-radius: 5px;background: #eaeaea;font-weight: 500;font-family: courier;" readonly>';
 
     for (let i = 0; i < log.length; i++) {
       html = html + log[i] + '\n';
